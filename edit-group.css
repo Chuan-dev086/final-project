@@ -1,0 +1,107 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    /* 保持与整体项目一致的流光渐变背景 */
+    background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 中央半透明卡片容器 */
+.form-container {
+    background-color: #1a2333;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px; /* 或者根据你的页面内容设定一个最小高度 */
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-align: center;
+    background: linear-gradient(to right, #a78bfa, #ff6b6b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 🌟 通过增加父级提升权重，完美去掉 !important */
+.form-container .form-control {
+    background-color: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.form-container .form-control:focus {
+    border-color: #a78bfa;
+    --bs-focus-ring-color: rgba(167, 139, 250, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(167, 139, 250, 0.25);
+    color: #ffffff;
+}
+
+.form-label {
+    color: #7b89a8;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+
+/* 霓虹紫/粉 提交按钮 */
+.btn-submit {
+    background: linear-gradient(135deg, #725AC1, #a78bfa);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: auto ;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(114, 90, 193, 0.4);
+    color: white;
+}
+
+/* 返回链接 */
+.btn-back {
+    color: #7b89a8;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-top: 20px;
+    transition: color 0.2s ease;
+}
+
+.btn-back:hover {
+    color: #ffffff;
+}

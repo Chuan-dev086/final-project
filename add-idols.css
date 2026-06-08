@@ -1,0 +1,110 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.form-container {
+    background-color: transparent;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* =======================================================
+   🌟 输入框与选择框定制 (增加父级连缀，完美干掉 !important)
+   ======================================================= */
+.form-container .form-control {
+    background-color: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* 当下拉菜单（select）展开时，确保选项在各大浏览器中的背景与字色正常显示 */
+.form-container .form-control option {
+    background-color: #111827;
+    color: #ffffff;
+}
+
+/* 通过提高选择器权重覆盖 Bootstrap 的 :focus 状态 */
+.form-container .form-control:focus {
+    border-color: #654ea3;
+    /* 🌟 核心技巧：同时修改 Bootstrap 内部变量和原生属性，优雅去除阴影 */
+    --bs-focus-ring-color: rgba(101, 78, 163, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(101, 78, 163, 0.25);
+    color: #ffffff; /* 确保聚焦时文字依然是白色 */
+}
+
+.form-label {
+    color: #7b89a8;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* 提交按钮 */
+.btn-submit {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #10b981, #059669);
+    opacity: 0.9; /* 渐变色按钮 hover 时用透明度微调体验更佳 */
+}
+
+/* 返回链接 */
+.btn-back {
+    color: #7b89a8;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-top: 20px;
+    transition: color 0.2s ease;
+}
+
+.btn-back:hover {
+    color: #ffffff;
+}

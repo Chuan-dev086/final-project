@@ -1,0 +1,139 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: white;
+  padding: 20px 0;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 大层面的毛玻璃卡片容器 */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.gradient-title {
+  background: linear-gradient(to right, #a78bfa, #ff6b6b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* 顶部返回及添加按钮定制 */
+.btn-action-back {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.btn-action-back:hover {
+  color: #a78bfa;
+}
+
+.btn-add-group {
+  background: linear-gradient(135deg, #725ac1, #a78bfa);
+  border: none;
+  color: white;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.btn-add-group:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(114, 90, 193, 0.4);
+  color: white;
+}
+
+/* =======================================================
+   🌟 毛玻璃表格样式定制 (全面移除 !important，完美靠权重和变量胜出)
+   ======================================================= */
+.glass-panel table.table-glass {
+  color: white;
+  vertical-align: middle;
+}
+
+/* 通过多层级精确定位 > thead > tr > th，轻松战胜 Bootstrap 默认样式 */
+.glass-panel table.table-glass > thead > tr > th {
+  background: rgba(255, 255, 255, 0.08);
+  /* 🌟 核心技巧：修改 Bootstrap 内部变量，即可完美干掉它自带的 9999px 阴影遮罩色 */
+  --bs-table-bg: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+}
+
+/* 同理，精确定位数据单元格 */
+.glass-panel table.table-glass > tbody > tr > td {
+  background: transparent;
+  --bs-table-bg: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 15px;
+}
+
+/* 极光操作按钮 */
+.btn-edit {
+  color: #55efc4;
+  /* 霓虹绿 */
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 15px;
+  transition: opacity 0.2s;
+}
+
+.btn-delete {
+  color: #ff6b6b;
+  /* 霓虹红 */
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.btn-edit:hover,
+.btn-delete:hover {
+  opacity: 0.8;
+}
+
+/* 🌟 自定义浅紫色样式（因为 Bootstrap 默认没有此颜色，所以这里本身就不需要 !important） */
+.text-purple-300 {
+  color: #c084fc;
+}
+
+/* 手机端响应式微调 */
+@media (max-width: 576px) {
+  .glass-panel {
+    padding: 20px 15px;
+    border-radius: 16px;
+  }
+
+  .table-glass th,
+  .table-glass td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}

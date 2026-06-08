@@ -1,0 +1,151 @@
+/* applied font-style to all */
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+/* background-color  */
+body {
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: white;
+  padding: 20px 0;
+}
+
+/* animation for background color  */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* table-container pattern  */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* table-tittle */
+.gradient-title {
+  background: linear-gradient(to right, #a78bfa, #ff6b6b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* go back button  */
+.btn-action-back {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+/* go back button hover effect  */
+.btn-action-back:hover {
+  color: #a78bfa;
+}
+
+/* add button */
+.btn-add-idol {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  color: white;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+/* add button hover effect  */
+.btn-add-idol:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+  color: white;
+}
+
+/* control table color  */
+.glass-panel table.table-glass {
+  color: white;
+  vertical-align: middle;
+}
+
+/* the color of table head  */
+.glass-panel table.table-glass thead tr th {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+}
+
+/* the color of table data  */
+.glass-panel table.table-glass tbody tr td {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 15px;
+}
+
+/* edit-button  */
+.btn-edit {
+  background: linear-gradient(135deg, #a29bfe, #74b9ff);
+  border: none;
+  color: white;
+  font-weight: 500;
+  padding: 8px 12px;
+  /* 🌟 缩减内边距，让它变成精致的轻量方块 */
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* delete-button */
+.btn-delete {
+  background: linear-gradient(135deg, #ff7675, #d63031);
+  border: none;
+  color: white;
+  font-weight: 500;
+  padding: 8px 12px;
+  /* 🌟 保持一致的紧凑内边距 */
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* hover-effect  */
+.btn-edit:hover,
+.btn-delete:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+/* responsive for phone-screen width  */
+@media (max-width: 576px) {
+  .glass-panel {
+    padding: 20px 15px;
+    border-radius: 16px;
+  }
+  .glass-panel table.table-glass thead tr th,
+  .glass-panel table.table-glass tbody tr td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
