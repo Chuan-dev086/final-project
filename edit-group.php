@@ -23,6 +23,7 @@ if (!$group) {
     exit;
 }
 
+
 // 🌟 3. 核心：点进来后，才从数据库里把这个 group 的所有组员艺名查出来
 $members_stmt = $db->prepare("
     SELECT i.stage_name 
@@ -86,17 +87,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
 
-        <!-- 使用了写法3：直接回显不带函数 -->
         <form action="edit-group.php?id=<?= $id ?>" method="POST">
             <div class="mb-4">
                 <label自动 for="group_name" class="form-label">Group Name</label>
-                    <!-- 如果是 User 角色，设置为 readonly 不允许修改输入框 -->
                     <input type="text" class="form-control" id="group_name" name="group_name"
                         value="<?= $group['group_name'] ?>"
                         <?= $_SESSION['role'] !== 'Admin' ? 'readonly' : '' ?> required>
             </div>
 
-            <!-- 🌟 重点在这里：把组员的名字用漂亮的“发光标签”展示在里面 -->
+            <!-- members content  -->
             <div class="mb-4">
                 <label class="form-label">Current Members</label>
                 <div class="d-flex flex-wrap gap-2 pt-1">
@@ -112,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
+           
             <!-- 只有管理员显示 Save 按钮 -->
             <?php if ($_SESSION['role'] === 'Admin'): ?>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #725ac1, #a78bfa); color: white;">

@@ -1,6 +1,7 @@
 * {
   font-family: "Poppins", sans-serif;
 }
+/* background color  */
 body {
   min-height: 100vh;
   display: flex;
@@ -29,6 +30,7 @@ body {
   }
 }
 
+/* form pattern */
 .login-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(25px);
@@ -69,6 +71,7 @@ body {
   color: #ffffff;
 }
 
+/* submit button  */
 button {
   position: relative;
   display: inline-block;
@@ -86,12 +89,12 @@ button {
   border-radius: 10px;
   box-shadow: inset 0 0 0 0 #725ac1;
 }
-
+/* hover efect */
 button:hover {
   color: white;
   box-shadow: inset 0 -100px 0 0 #725ac1;
 }
-
+/* click effect */
 button:active {
-  transform: scale(0.9);
+  transform: scale(0.9);   /* will become smaller when onclick */
 }

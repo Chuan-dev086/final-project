@@ -3,7 +3,7 @@ require 'header.php';
 
 // 1. 检查登录
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: login-form.php');
     exit;
 }
 
