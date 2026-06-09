@@ -35,6 +35,7 @@ body {
 }
 
 .gradient-title {
+  text-align: center;
   background: linear-gradient(to right, #a78bfa, #ff6b6b);
   -webkit-background-clip: text;
   background-clip: text;
@@ -70,17 +71,15 @@ body {
 }
 
 /* =======================================================
-   🌟 毛玻璃表格样式定制 (全面移除 !important，完美靠权重和变量胜出)
+   🌟 毛玻璃表格样式定制
    ======================================================= */
 .glass-panel table.table-glass {
   color: white;
   vertical-align: middle;
 }
 
-/* 通过多层级精确定位 > thead > tr > th，轻松战胜 Bootstrap 默认样式 */
 .glass-panel table.table-glass > thead > tr > th {
   background: rgba(255, 255, 255, 0.08);
-  /* 🌟 核心技巧：修改 Bootstrap 内部变量，即可完美干掉它自带的 9999px 阴影遮罩色 */
   --bs-table-bg: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.7);
   font-weight: 600;
@@ -88,7 +87,6 @@ body {
   padding: 15px;
 }
 
-/* 同理，精确定位数据单元格 */
 .glass-panel table.table-glass > tbody > tr > td {
   background: transparent;
   --bs-table-bg: transparent;
@@ -96,10 +94,26 @@ body {
   padding: 15px;
 }
 
+/* 🌟 KPOP 核心高质感调色体系 */
+.custom-id {
+  color: #93c5fd; /* 清爽冰晶蓝 */
+  font-weight: 500;
+}
+
+.custom-group-name {
+  color: #f472b6; /* 梦幻樱花粉 */
+  font-weight: 600;
+}
+
+.custom-members {
+  color: #c084fc; 
+  justify-content: center;
+  align-items: center;/* 优雅薰衣草紫 */
+}
+
 /* 极光操作按钮 */
 .btn-edit {
   color: #55efc4;
-  /* 霓虹绿 */
   text-decoration: none;
   font-weight: 500;
   margin-right: 15px;
@@ -108,7 +122,6 @@ body {
 
 .btn-delete {
   color: #ff6b6b;
-  /* 霓虹红 */
   text-decoration: none;
   font-weight: 500;
   transition: opacity 0.2s;
@@ -117,11 +130,6 @@ body {
 .btn-edit:hover,
 .btn-delete:hover {
   opacity: 0.8;
-}
-
-/* 🌟 自定义浅紫色样式（因为 Bootstrap 默认没有此颜色，所以这里本身就不需要 !important） */
-.text-purple-300 {
-  color: #c084fc;
 }
 
 /* 手机端响应式微调 */

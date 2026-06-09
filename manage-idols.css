@@ -18,11 +18,9 @@ body {
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
@@ -63,7 +61,7 @@ body {
 
 /* add button */
 .btn-add-idol {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #725ac1, #a78bfa);
   border: none;
   color: white;
   font-weight: 500;
@@ -76,7 +74,7 @@ body {
 /* add button hover effect  */
 .btn-add-idol:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 5px 15px rgba(114, 90, 193, 0.4);
   color: white;
 }
 
@@ -89,16 +87,44 @@ body {
 /* the color of table head  */
 .glass-panel table.table-glass thead tr th {
   background: rgba(255, 255, 255, 0.08);
+  --bs-table-bg: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.7);
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   padding: 15px;
+  font-weight: 600;
 }
 
 /* the color of table data  */
 .glass-panel table.table-glass tbody tr td {
   background: transparent;
+  --bs-table-bg: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding: 15px;
+}
+
+/* 🌟 KPOP 核心高质感调色体系 (作用于内嵌的 span 标签) */
+.custom-id {
+  color: #93c5fd; /* 清爽冰晶蓝 */
+  font-weight: 500;
+}
+
+.custom-name {
+  color: #ffffff; /* 纯洁星光白（让真实姓名显得沉稳） */
+  font-weight: 500;
+}
+
+.custom-stage-name {
+  color: #f472b6; /* 梦幻樱花粉（高亮彰显核心艺名） */
+  font-weight: 600;
+}
+
+.custom-dob {
+  color: #cbd5e1; /* 柔和优雅浅灰 */
+}
+
+.custom-groups-row {
+  color: #c084fc; /* 优雅薰衣草紫 */
+  font-weight: 500;
 }
 
 /* edit-button  */
@@ -108,7 +134,6 @@ body {
   color: white;
   font-weight: 500;
   padding: 8px 12px;
-  /* 🌟 缩减内边距，让它变成精致的轻量方块 */
   border-radius: 10px;
   text-decoration: none;
   display: inline-flex;
@@ -122,7 +147,6 @@ body {
   color: white;
   font-weight: 500;
   padding: 8px 12px;
-  /* 🌟 保持一致的紧凑内边距 */
   border-radius: 10px;
   transition: all 0.3s ease;
   text-decoration: none;

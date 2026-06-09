@@ -88,12 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="add-idols.php" method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Real Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Real Name" required>
             </div>
 
             <div class="mb-3">
                 <label for="stage_name" class="form-label">Stage Name</label>
-                <input type="text" class="form-control" id="stage_name" name="stage_name" required>
+                <input type="text" class="form-control" id="stage_name" name="stage_name" 
+                placeholder="Stage Name" required>
             </div>
 
             <!-- 组合下拉选择框 -->

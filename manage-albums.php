@@ -1,21 +1,13 @@
 <?php
 require 'header.php';
 
-// 检查登录
+// 1. 检查登录
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
 
-// 处理删除逻辑
-if (isset($_GET['delete_id']) && $_SESSION['role'] === 'Admin') {
-    $stmt = $db->prepare("DELETE FROM albums WHERE id = :id");
-    $stmt->execute([':id' => $_GET['delete_id']]);
-    header("Location: manage-albums.php");
-    exit;
-}
-
-// 查询：获取所有专辑及其关联的组合名称
+// 2. 查询：获取所有专辑及其关联的组合名称
 $query = "SELECT a.*, g.group_name 
           FROM albums a 
           LEFT JOIN groups g ON a.group_id = g.id 
@@ -42,7 +34,7 @@ $albums = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
             <a href="dashboard.php" class="btn-action-back small">
                 <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
             </a>
-            <?php if ($_SESSION['role'] === 'Admin'): ?>
+            <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
                 <a href="add-album.php" class="btn btn-add-group small">
                     <i class="bi bi-disc-fill me-1"></i>Add New Album
                 </a>
@@ -74,20 +66,29 @@ $albums = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
                         <?php else: ?>
                             <?php foreach ($albums as $row): ?>
                                 <tr>
-                                    <td><strong><?= $row['name'] ?></strong></td>
-                                    <td class=" group-row"><?= $row['group_name'] ?? 'Unknown' ?></td>
-                                    <td><?= $row['release_date'] ?></td>
+                                    <td><span class="custom-album-name"><i class="bi bi-disc-fill small me-2"></i><?= $row['name'] ?></span></td>
+                                    <td><span class="custom-group-row"><i class="bi bi-people-fill small me-2"></i><?= $row['group_name'] ?? 'Unknown' ?></span></td>
+                                    <td><span class="custom-date-row"><i class="bi bi-calendar3 small me-2"></i><?= $row['release_date'] ?></span></td>
                                     <td class="text-center">
-                                        <a href="edit-album.php?id=<?= $row['id'] ?>" class="btn-edit">
-                                            <i class="bi bi-pencil-square me-1"></i>Edit
-                                        </a>
-                                        <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                            <a href="manage-albums.php?delete_id=<?= $row['id'] ?>"
+
+                                        <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
+                                            <a href="edit-album.php?id=<?= $row['id'] ?>" class="btn-edit">
+                                                <i class="bi bi-pencil-square me-1"></i>Edit
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="edit-album.php?id=<?= $row['id'] ?>" class="btn-edit">
+                                                <i class="bi bi-eye-fill me-1"></i>View
+                                            </a>
+                                        <?php endif; ?>
+
+                                        <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
+                                            <a href="delete-album.php?id=<?= $row['id'] ?>"
                                                 onclick="return confirm('Delete this album?');"
                                                 class="btn-delete">
                                                 <i class="bi bi-trash3-fill me-1"></i>Delete
                                             </a>
                                         <?php endif; ?>
+
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

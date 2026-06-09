@@ -15,17 +15,12 @@ body {
 }
 
 @keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
+/* 🌟 卡片容器：移除所有毛玻璃白边，彻底解决白边框困扰 */
 .form-container {
   background-color: transparent;
   border-radius: 24px;
@@ -40,21 +35,19 @@ body {
   font-weight: bold;
   margin-bottom: 25px;
   text-align: center;
+  background: linear-gradient(to right, #a78bfa, #ff6b6b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* 🌟 占位符定制：防止在暗色背景下变成黑色/深色 */
+/* 🌟 占位符安全色：防止输入框提示字在暗色背景下变黑看不见 */
 .form-container .form-control::placeholder {
-  color: rgba(
-    255,
-    255,
-    255,
-    0.4
-  ); /* 使用 40% 透明度的白色，既能看清又不会喧宾夺主 */
-  opacity: 1; /* 覆盖某些浏览器默认的透明度设置 */
+  color: rgba(255, 255, 255, 0.4); 
+  opacity: 1; 
 }
-/* =======================================================
-   🌟 输入框与选择框定制 (增加父级连缀，完美干掉 !important)
-   ======================================================= */
+
+/* 输入框定制 */
 .form-container .form-control {
   background-color: #111827;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -63,19 +56,18 @@ body {
   padding: 12px;
 }
 
-/* 当下拉菜单（select）展开时，确保选项在各大浏览器中的背景与字色正常显示 */
 .form-container .form-control option {
   background-color: #111827;
   color: #ffffff;
 }
 
-/* 通过提高选择器权重覆盖 Bootstrap 的 :focus 状态 */
+/* 聚焦状态，并强行阻断浏览器自带的任何外轮廓白框 */
 .form-container .form-control:focus {
   border-color: #654ea3;
-  /* 🌟 核心技巧：同时修改 Bootstrap 内部变量和原生属性，优雅去除阴影 */
+  outline: none !important;
   --bs-focus-ring-color: rgba(101, 78, 163, 0.25);
   box-shadow: 0 0 0 0.25rem rgba(101, 78, 163, 0.25);
-  color: #ffffff; /* 确保聚焦时文字依然是白色 */
+  color: #ffffff; 
 }
 
 .form-label {
@@ -84,22 +76,23 @@ body {
   margin-bottom: 8px;
 }
 
-/* 提交按钮 */
+/* 提交按钮（采用了高质感的 KPOP 蓝紫渐变） */
 .btn-submit {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: rgb(0, 0, 0);
+  background: linear-gradient(135deg, #725ac1, #a78bfa);
+  color: #ffffff;
   border: none;
   padding: 12px;
   border-radius: 12px;
   width: 100%;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .btn-submit:hover {
-  background: linear-gradient(135deg, #10b981, #059669);
-  opacity: 0.9; /* 渐变色按钮 hover 时用透明度微调体验更佳 */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(114, 90, 193, 0.4);
+  color: #ffffff;
 }
 
 /* 返回链接 */

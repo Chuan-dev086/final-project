@@ -1,48 +1,61 @@
 <?php
 require 'header.php';
 
-// 检查是否登录
+// 1. 登录校验
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
 
-$id = $_GET['id'] ?? '';
-if (empty($id)) {
+$id = $_GET['id'] ?? null;
+if (!$id) {
     header('Location: manage-groups.php');
     exit;
 }
 
-// 获取组合及成员数据
-$query = "SELECT g.group_name, i.stage_name as idol_name 
-          FROM groups g
-          LEFT JOIN idol_group ig ON g.id = ig.group_id
-          LEFT JOIN idols i ON ig.idol_id = i.id
-          WHERE g.id = :id";
-$stmt = $db->prepare($query);
+// 2. 查询当前选中的组合名字
+$stmt = $db->prepare("SELECT * FROM `groups` WHERE id = :id");
 $stmt->execute([':id' => $id]);
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$group = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$results) {
-    header('Location: manage-groups.php');
+if (!$group) {
+    echo "<script>alert('Group not found!'); window.location.href='manage-groups.php';</script>";
     exit;
 }
 
-$current_group_name = $results[0]['group_name'];
-$members = array_filter(array_column($results, 'idol_name'));
+// 🌟 3. 核心：点进来后，才从数据库里把这个 group 的所有组员艺名查出来
+$members_stmt = $db->prepare("
+    SELECT i.stage_name 
+    FROM idols i 
+    JOIN idol_group ig ON i.id = ig.idol_id 
+    WHERE ig.group_id = :group_id
+    ORDER BY i.stage_name ASC
+");
+$members_stmt->execute([':group_id' => $id]);
+$members = $members_stmt->fetchAll(PDO::FETCH_COLUMN); // 拿到纯名字数组
 
-// 处理编辑请求（只有 Admin 才有权限执行）
-$success = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['role'] === 'Admin') {
-    $new_name = trim($_POST['group_name'] ?? '');
-    if (!empty($new_name)) {
-        $updateStmt = $db->prepare("UPDATE groups SET group_name = :name WHERE id = :id");
-        $updateStmt->execute([':name' => $new_name, ':id' => $id]);
-        $current_group_name = $new_name;
-        $success = 'Group updated successfully!';
-        header('Location: manage-groups.php');
+$error = '';
+
+// 4. 处理表单修改逻辑（只有 Admin 有权修改提交）
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SESSION['role'] !== 'Admin') {
+        echo "<script>alert('Only Admin can edit!'); window.location.href='manage-groups.php';</script>";
         exit;
     }
+
+    $group_name = trim($_POST['group_name'] ?? '');
+
+    if (empty($group_name)) {
+        $error = 'Group Name cannot be empty!';
+    }
+    $updateQuery = "UPDATE `groups` SET group_name = :group_name WHERE id = :id";
+    $updateStmt = $db->prepare($updateQuery);
+    $updateStmt->execute([
+        ':group_name' => $group_name,
+        ':id' => $id
+    ]);
+    header('Location: manage-groups.php');
+    exit;
 }
 
 ?>
@@ -53,55 +66,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['role'] === 'Admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K Pop Management System </title>
+    <title>Group Details & Edit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="edit-group.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 🌟 复用 add-idols.css 保证极光通透感 -->
+    <link rel="stylesheet" href="add-idols.css">
 </head>
 
 <body>
     <div class="form-container">
-        <h2 class="form-title"><?= ($_SESSION['role'] === 'Admin') ? 'Edit Group' : 'View Group' ?></h2>
-        <?php if ($_SESSION['role'] === 'Admin'): ?>
-            <form action="edit-group.php?id=<?= $id ?>" method="POST">
-                <div class="mb-4">
-                    <label class="form-label">Group Name</label>
-                    <input type="text" class="form-control" name="group_name" value="<?= $current_group_name ?>" required>
-                </div>
-                
-                <div class="mb-4 ">
-                    <label class="form-label">Members:</label>
-                    <div class="p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
-                        <?php if (!empty($members)): ?>
-                            <div class="d-flex flex-wrap gap-2">
-                                <?php foreach ($members as $name): ?>
-                                    <span class="badge" style="background: #a78bfa33; color: #e9d5ff; border: 1px solid #a78bfa;">
-                                        <?= $name ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php else: ?>
-                            <p class="text-white-50 m-0 small">No members assigned.</p>
-                        <?php endif; ?>
-                    </div>
-                </div>
+        <h2 class="form-title" style="background: linear-gradient(to right, #a78bfa, #ff6b6b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+            <i class="bi bi-eye-fill me-2"></i>Group Details
+        </h2>
 
-                <button type="submit" class="btn-submit">Update Changes</button>
-            </form>
-        <?php else: ?>
-            <div class="mb-4">
-                <label class="form-label">Group Name</label>
-                <div class="p-3" style="background: #111827; border-radius: 12px; color: #fff;">
-                    <?= $current_group_name ?>
-                </div>
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-danger" style="border-radius: 12px; background-color: #ef444422; color: #f87171; border: 1px solid #ef444444;">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i><?= $error ?>
             </div>
         <?php endif; ?>
 
+        <!-- 使用了写法3：直接回显不带函数 -->
+        <form action="edit-group.php?id=<?= $id ?>" method="POST">
+            <div class="mb-4">
+                <label自动 for="group_name" class="form-label">Group Name</label>
+                    <!-- 如果是 User 角色，设置为 readonly 不允许修改输入框 -->
+                    <input type="text" class="form-control" id="group_name" name="group_name"
+                        value="<?= $group['group_name'] ?>"
+                        <?= $_SESSION['role'] !== 'Admin' ? 'readonly' : '' ?> required>
+            </div>
 
+            <!-- 🌟 重点在这里：把组员的名字用漂亮的“发光标签”展示在里面 -->
+            <div class="mb-4">
+                <label class="form-label">Current Members</label>
+                <div class="d-flex flex-wrap gap-2 pt-1">
+                    <?php if (empty($members)): ?>
+                        <span class="text-white-50 small">No members assigned to this group yet.</span>
+                    <?php else: ?>
+                        <?php foreach ($members as $name): ?>
+                            <span style="background: rgba(167, 139, 250, 0.15); color: #c084fc; border: 1px solid rgba(167, 139, 250, 0.3); padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 500;">
+                                <i class="bi bi-person-badge-fill me-1 small"></i><?= $name ?>
+                            </span>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
 
+            <!-- 只有管理员显示 Save 按钮 -->
+            <?php if ($_SESSION['role'] === 'Admin'): ?>
+                <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #725ac1, #a78bfa); color: white;">
+                    <i class="bi bi-save-fill me-2"></i>Save Changes
+                </button>
+            <?php endif; ?>
+        </form>
 
-
-        <a href="manage-groups.php" class="btn-back"><i class="bi bi-arrow-left"></i> Back</a>
+        <a href="manage-groups.php" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Back to Groups
+        </a>
+    </div>
 </body>
 
 </html>

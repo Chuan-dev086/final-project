@@ -60,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit" class="btn-submit">Create Group</button>
         </form>
-         <a href="manage-groups.php" class="btn-back">
-            <i class="bi bi-arrow-left"></i> Back 
+        <a href="manage-groups.php" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Back
         </a>
     </div>
 

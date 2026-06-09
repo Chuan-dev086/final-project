@@ -64,7 +64,8 @@ $idols = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th style="min-width: 140px;">Name</th>
                             <th style="min-width: 120px;">Stage Name</th>
                             <th style="min-width: 110px;">D.O.B</th>
-                            <th style="min-width: 150px;">Groups</th> <?php if ($isAdmin): ?>
+                            <th style="min-width: 150px;">Groups</th> 
+                            <?php if ($isAdmin): ?>
                                 <th style="min-width: 120px; text-align: center;">Actions</th>
                             <?php endif; ?>
                         </tr>
@@ -72,12 +73,16 @@ $idols = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                         <?php foreach ($idols as $idol): ?>
                             <tr>
-                                <td style="color: violet"><?= $idol['id'] ?></td>
-                                <td style="color:yellowgreen"><?= $idol['name'] ?></td>
-                                <td style="color:#ff6b6b"><?= $idol['stage_name'] ?></td>
-                                <td style="color:#eefd3f ;"><?= $idol['dob'] ?></td>
-                                <td style="color:#74b9ff;">
-                                    <?= !empty($idol['my_groups']) ? $idol['my_groups'] : '<span class="text-white-50 small">Soloist</span>' ?>
+                                <td><span class="custom-id"><?= $idol['id'] ?></span></td>
+                                <td><span class="custom-name"><?= $idol['name'] ?></span></td>
+                                <td><span class="custom-stage-name"><i class="bi bi-stars small me-1"></i><?= $idol['stage_name'] ?></span></td>
+                                <td><span class="custom-dob"><i class="bi bi-calendar-event small me-1"></i><?= $idol['dob'] ?></span></td>
+                                <td>
+                                    <?php if (!empty($idol['my_groups'])): ?>
+                                        <span class="custom-groups-row"><i class="bi bi-people-fill small me-1"></i><?= $idol['my_groups'] ?></span>
+                                    <?php else: ?>
+                                        <span class="text-white-50 small"><i class="bi bi-person small me-1"></i>Soloist</span>
+                                    <?php endif; ?>
                                 </td>
 
                                 <?php if ($isAdmin): ?>

@@ -23,7 +23,7 @@ body {
 
 /* 中央半透明卡片容器 */
 .form-container {
-    background-color: #1a2333;
+    background-color: transparent ;
     border-radius: 24px;
     padding: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -31,7 +31,7 @@ body {
     max-width: 500px;
     display: flex;
     flex-direction: column;
-    min-height: 500px; /* 或者根据你的页面内容设定一个最小高度 */
+    min-height: 300px; /* 或者根据你的页面内容设定一个最小高度 */
 }
 
 .form-title {
