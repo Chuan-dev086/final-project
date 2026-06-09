@@ -85,7 +85,7 @@ $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </td>
                                     <td>
                                         <div class="mb-4">
-                                            <div class="p-3" >
+                                            <div class="p-3">
                                                 <?php if (empty($group_albums)): ?>
                                                     <div class="text-white-50 small text-center py-3">
                                                         <i class="bi bi-folder-symlink d-block fs-4 mb-2 opacity-50"></i>
@@ -119,10 +119,15 @@ $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <!-- 点击 View 带着 ID 进到里面看详情 -->
-                                        <a href="edit-group.php?id=<?= $row['id'] ?>" class="btn-edit">
-                                            <i class="bi bi-pencil-square me-1"></i>View
-                                        </a>
+                                        <?php if ($_SESSION['role'] === 'Admin'): ?>
+                                            <a href="edit-group.php?id=<?= $row['id'] ?>" class="btn-edit">
+                                                <i class="bi bi-pencil-square me-1"></i>Edit
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="edit-group.php?id=<?= $row['id'] ?>" class="btn-edit">
+                                                <i class="bi bi-eye-fill me-1"></i>View
+                                            </a>
+                                        <?php endif; ?>
                                         <?php if ($_SESSION['role'] === 'Admin'): ?>
                                             <a href="delete-group.php?id=<?= $row['id'] ?>"
                                                 onclick="return confirm('Are you sure you want to delete this group?');"

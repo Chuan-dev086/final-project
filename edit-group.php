@@ -78,15 +78,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="form-container">
         <h2 class="form-title" style="background: linear-gradient(to right, #a78bfa, #ff6b6b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-            <i class="bi bi-eye-fill me-2"></i>Group Details
+            <?php if ($_SESSION['role'] === 'Admin'): ?>
+                <i class="bi bi-pencil-square me-2"></i>Edit Group
+            <?php else: ?>
+                <i class="bi bi-eye-fill me-2"></i>Group Details
+            <?php endif; ?>
         </h2>
-
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger" style="border-radius: 12px; background-color: #ef444422; color: #f87171; border: 1px solid #ef444444;">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i><?= $error ?>
             </div>
         <?php endif; ?>
-
         <form action="edit-group.php?id=<?= $id ?>" method="POST">
             <div class="mb-4">
                 <label自动 for="group_name" class="form-label">Group Name</label>
@@ -94,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         value="<?= $group['group_name'] ?>"
                         <?= $_SESSION['role'] !== 'Admin' ? 'readonly' : '' ?> required>
             </div>
-
             <!-- members content  -->
             <div class="mb-4">
                 <label class="form-label">Current Members</label>
@@ -111,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-           
+
             <!-- 只有管理员显示 Save 按钮 -->
             <?php if ($_SESSION['role'] === 'Admin'): ?>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #725ac1, #a78bfa); color: white;">
