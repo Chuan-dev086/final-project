@@ -1,5 +1,9 @@
+/* =======================================================
+   🌟 全局控制与动态多光谱背景
+   ======================================================= */
 * {
   font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
 
 body {
@@ -12,18 +16,14 @@ body {
 }
 
 @keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* 大层面的毛玻璃卡片容器 */
+/* =======================================================
+   🌟 核心毛玻璃卡片容器与渐变标题
+   ======================================================= */
 .glass-panel {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
@@ -43,11 +43,14 @@ body {
   font-weight: 700;
 }
 
-/* 顶部返回及添加按钮定制 */
+/* =======================================================
+   🌟 顶部控制区（返回与添加组合按钮）
+   ======================================================= */
 .btn-action-back {
   color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
   transition: color 0.3s;
+  white-space: nowrap; /* 防止返回按钮在窄屏下断行 */
 }
 
 .btn-action-back:hover {
@@ -62,6 +65,7 @@ body {
   padding: 10px 20px;
   border-radius: 12px;
   transition: all 0.3s ease;
+  white-space: nowrap; /* 防止添加按钮在窄屏下断行 */
 }
 
 .btn-add-group:hover {
@@ -71,7 +75,7 @@ body {
 }
 
 /* =======================================================
-   🌟 毛玻璃表格样式定制
+   🌟 高级半透明毛玻璃数据表格定制
    ======================================================= */
 .glass-panel table.table-glass {
   color: white;
@@ -85,6 +89,7 @@ body {
   font-weight: 600;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   padding: 15px;
+  white-space: nowrap; /* 表头文字坚决不换行 */
 }
 
 .glass-panel table.table-glass > tbody > tr > td {
@@ -94,45 +99,138 @@ body {
   padding: 15px;
 }
 
-/* 🌟 KPOP 核心高质感调色体系 */
+/* =======================================================
+   🌟 核心修复：改用 min-width 设立“护城河”，让列拒绝被压扁
+   ======================================================= */
+.col-id {
+  min-width: 80px;
+}
+
+.col-group-name {
+  min-width: 160px;
+}
+
+.col-members {
+  min-width: 150px;
+}
+
+.col-albums {
+  min-width: 340px; /* 确保专辑列拥有充足的展示空间 */
+}
+
+.col-actions {
+  min-width: 220px;  /* 锁死最小宽度，给两个大胶囊按钮留足地方 */
+  text-align: center; 
+}
+
+/* =======================================================
+   🌟 KPOP 核心高质感数据文本调色
+   ======================================================= */
 .custom-id {
-  color: #93c5fd; /* 清爽冰晶蓝 */
+  color: #93c5fd;
   font-weight: 500;
 }
 
 .custom-group-name {
-  color: #f472b6; /* 梦幻樱花粉 */
+  color: #f472b6;
   font-weight: 600;
+  white-space: nowrap; /* 组合名字绝对不换行，不缩水 */
 }
 
 .custom-members {
-  color: #c084fc; 
-  justify-content: center;
-  align-items: center;/* 优雅薰衣草紫 */
+  color: #c084fc;
+  white-space: nowrap; /* 人数绝对不换行 */
 }
 
-/* 极光操作按钮 */
-.btn-edit {
-  color: #55efc4;
-  text-decoration: none;
+/* =======================================================
+   🌟 已发行专辑：局部垂直滚动列表
+   ======================================================= */
+.album-scroll-container {
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.album-scroll-container::-webkit-scrollbar {
+  width: 4px;
+}
+.album-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.album-item-row {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap; /* 保证单条专辑内容一行平铺 */
+}
+.album-item-row:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.album-title-truncate {
+  max-width: 200px;
+}
+
+.album-year-badge {
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.album-detail-link {
+  color: #c084fc;
+  font-size: 13px;
   font-weight: 500;
-  margin-right: 15px;
-  transition: opacity 0.2s;
+  transition: color 0.2s ease;
+}
+.album-detail-link:hover {
+  color: #e9d5ff;
+}
+
+/* =======================================================
+   🌟 完美同步：来自 manage-idols.css 的高级渐变胶囊按钮
+   ======================================================= */
+.btn-edit {
+  background: linear-gradient(135deg, #a29bfe, #74b9ff);
+  border: none;
+  color: white !important;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* 按钮文字决不换行 */
 }
 
 .btn-delete {
-  color: #ff6b6b;
-  text-decoration: none;
+  background: linear-gradient(135deg, #ff7675, #d63031);
+  border: none;
+  color: white !important;
   font-weight: 500;
-  transition: opacity 0.2s;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap; /* 按钮文字决不换行 */
 }
 
 .btn-edit:hover,
 .btn-delete:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* 手机端响应式微调 */
+/* =======================================================
+   🌟 手机移动端自适应微调
+   ======================================================= */
 @media (max-width: 576px) {
   .glass-panel {
     padding: 20px 15px;

@@ -93,7 +93,7 @@ $idols = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             </a>
                                             <a href="delete-idols.php?id=<?= $idol['id'] ?>"
                                                 class="btn-delete"
-                                                onclick="return confirm('Sure to Delete Idols？');">
+                                                onclick="return confirm('Sure to Delete Idols?');">
                                                 <i class="bi bi-trash3-fill "></i>
                                             </a>
                                         </div>

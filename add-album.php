@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !=='Manager'){
+if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') {
     echo "<script>alert('Unauthorized access!'); window.location.href='manage-albums.php';</script>";
     exit;
 }
@@ -21,7 +21,7 @@ $error = '';
 // 3. 处理表单提交
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
-    $group_id = $_POST['group_id'] ?? ''; 
+    $group_id = $_POST['group_id'] ?? '';
     $songs = trim($_POST['songs'] ?? ''); // 🌟 接收新增的歌曲信息
 
     // 🌟 接收三个独立的日期输入框值
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $month = (int)$month < 10 ? '0' . (int)$month : $month;
         $day   = (int)$day   < 10 ? '0' . (int)$day   : $day;
         $release_date = "$year-$month-$day";
-        
+
         // 🌟 从 Session 中自动抓取当前录入数据的管理员 ID，对应 created_by 字段
         $created_by = $_SESSION['user_id'];
 
@@ -103,10 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endforeach; ?>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label for="songs" class="form-label">Songs List</label>
-                <input type="text" class="form-control" id="songs" name="songs" placeholder="e.g., Title, Track 2, Track 3" required>
+                <textarea class="form-control" id="songs" name="songs" rows="6"
+                    placeholder="Type one song per line...&#10;Example:&#10;Song A&#10;Song B&#10;Song C"
+                    style="line-height: 1.6; resize: vertical; min-height: 120px;" required></textarea>
+                <div class="form-text text-white-50 small mt-1">
+                    <i class="bi bi-info-circle me-1"></i>Press <b>Enter</b> to start a new song line.
+                </div>
             </div>
 
             <div class="mb-4">
@@ -131,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <i class="bi bi-check-circle-fill me-2"></i>Add Album
             </button>
         </form>
-        
+
         <a href="manage-albums.php" class="btn-back">
             <i class="bi bi-arrow-left"></i> Back to Albums
         </a>

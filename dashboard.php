@@ -29,8 +29,22 @@ $totalUsers = 0;
 // if role is admin 
 if ($current_role === 'admin') {
     // select the count of user in DB 
-    $stmtUsers = $db->query("SELECT COUNT(*) FROM users"); 
+    $stmtUsers = $db->query("SELECT COUNT(*) FROM users");
     $totalUsers = $stmtUsers->fetchColumn();
+}
+
+if ($current_role === 'admin') {
+    // 👑 Admin 登录：4张卡片，要排成 2x2 阵型
+    // 外层 row 不需要强制居中类名
+    $row_layout_class = "";
+    // 每张卡片在大屏幕上占 6 个格子 (12 ÷ 6 = 2，即一行刚好放2张，4张卡片自动分2行)
+    $col_layout_class = "col-12 col-sm-6 col-md-6 col-lg-6";
+} else {
+    // 👤 User 或 Manager 登录：3张卡片，要水平居中
+    // 外层 row 注入 justify-content-center，让内部卡片向舞台中央靠拢
+    $row_layout_class = "justify-content-center";
+    // 每张卡片在大屏幕上占 4 个格子 (12 ÷ 4 = 3，即一行刚好放满3张并完美对称)
+    $col_layout_class = "col-12 col-sm-6 col-md-6 col-lg-4";
 }
 ?>
 
@@ -105,9 +119,9 @@ if ($current_role === 'admin') {
             </div>
         </div>
         <!-- content card  -->
-        <div class="row g-3 g-md-4">
+        <div class="row g-3 g-md-4 <?= $row_layout_class ?>">
             <!-- idols -->
-            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="<?= $col_layout_class ?>">
                 <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
                     <div>
                         <div class="card-icon mb-2">
@@ -118,13 +132,13 @@ if ($current_role === 'admin') {
                     </div>
                     <a href="manage-idols.php" class="action-link">
                         <!-- if role is admin button will become manage idols if not is view idols  -->
-                        <span><?= ($current_role === 'admin') ? 'Manage Idols' : 'View Idols' ?></span> 
+                        <span><?= ($current_role === 'admin') ? 'Manage Idols' : 'View Idols' ?></span>
                         <i class="bi bi-arrow-right-short fs-5"></i>
                     </a>
                 </div>
             </div>
             <!-- Groups -->
-            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="<?= $col_layout_class ?>">
                 <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
                     <div>
                         <div class="card-icon mb-2">
@@ -140,7 +154,7 @@ if ($current_role === 'admin') {
                 </div>
             </div>
             <!-- Albums  -->
-            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="<?= $col_layout_class ?>">
                 <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
                     <div>
                         <div class="card-icon mb-2">
@@ -157,7 +171,7 @@ if ($current_role === 'admin') {
             </div>
             <!-- for Admin only  -->
             <?php if ($current_role === 'admin'): ?>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="<?= $col_layout_class ?>">
                     <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
                         <div>
                             <div class="card-icon mb-2">

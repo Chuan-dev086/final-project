@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="d-flex flex-column gap-2">
                                 <?php $index = 1; foreach ($tracklist as $song_title): ?>
                                     <div class="d-flex align-items-center justify-content-between py-2 px-3" 
-                                         style="background: rgba(255, 255, 255, 0.03); border-radius: 10px; border-left: 3px solid #3b82f6;">
+                                         style="background: rgba(255, 255, 255, 0.03); border-radius: 10px; ">
                                         <div class="d-flex align-items-center gap-3">
                                             <span class="text-white-50 small" style="font-family: monospace; width: 20px;">
                                                 <?= str_pad($index++, 2, '0', STR_PAD_LEFT) ?>
