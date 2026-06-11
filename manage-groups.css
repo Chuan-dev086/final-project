@@ -50,7 +50,7 @@ body {
   color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
   transition: color 0.3s;
-  white-space: nowrap; /* 防止返回按钮在窄屏下断行 */
+  white-space: nowrap;
 }
 
 .btn-action-back:hover {
@@ -65,7 +65,7 @@ body {
   padding: 10px 20px;
   border-radius: 12px;
   transition: all 0.3s ease;
-  white-space: nowrap; /* 防止添加按钮在窄屏下断行 */
+  white-space: nowrap;
 }
 
 .btn-add-group:hover {
@@ -89,7 +89,7 @@ body {
   font-weight: 600;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   padding: 15px;
-  white-space: nowrap; /* 表头文字坚决不换行 */
+  white-space: nowrap;
 }
 
 .glass-panel table.table-glass > tbody > tr > td {
@@ -100,26 +100,31 @@ body {
 }
 
 /* =======================================================
-   🌟 核心修复：改用 min-width 设立“护城河”，让列拒绝被压扁
+   🌟 比例重组：完美划分各列百分比，消灭长空白
    ======================================================= */
 .col-id {
-  min-width: 80px;
+  width: 10%;
+  min-width: 60px;
 }
 
 .col-group-name {
-  min-width: 160px;
+  width: 25%;
+  min-width: 140px;
 }
 
 .col-members {
-  min-width: 150px;
+  width: 20%;
+  min-width: 120px;
 }
 
 .col-albums {
-  min-width: 340px; /* 确保专辑列拥有充足的展示空间 */
+  width: 25%;
+  min-width: 120px;
 }
 
 .col-actions {
-  min-width: 220px;  /* 锁死最小宽度，给两个大胶囊按钮留足地方 */
+  width: 20%;
+  min-width: 180px;  
   text-align: center; 
 }
 
@@ -134,60 +139,25 @@ body {
 .custom-group-name {
   color: #f472b6;
   font-weight: 600;
-  white-space: nowrap; /* 组合名字绝对不换行，不缩水 */
+  white-space: nowrap;
 }
 
 .custom-members {
   color: #c084fc;
-  white-space: nowrap; /* 人数绝对不换行 */
+  white-space: nowrap;
 }
 
-/* =======================================================
-   🌟 已发行专辑：局部垂直滚动列表
-   ======================================================= */
-.album-scroll-container {
-  max-height: 150px;
-  overflow-y: auto;
-  padding-right: 5px;
+/* 🌟 专辑数据与彩色高亮图标配置 */
+.custom-albums {
+  color: #fcd34d; 
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
-.album-scroll-container::-webkit-scrollbar {
-  width: 4px;
-}
-.album-scroll-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-}
-
-.album-item-row {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-  transition: all 0.2s ease-in-out;
-  white-space: nowrap; /* 保证单条专辑内容一行平铺 */
-}
-.album-item-row:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
-.album-title-truncate {
-  max-width: 200px;
-}
-
-.album-year-badge {
-  font-size: 11px;
-  font-family: monospace;
-}
-
-.album-detail-link {
-  color: #c084fc;
-  font-size: 13px;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-.album-detail-link:hover {
-  color: #e9d5ff;
+.custom-albums i {
+  color: #fbbf24 !important; /* 注入亮眼金黄色 */
+  font-size: 1.1rem;
 }
 
 /* =======================================================
@@ -204,7 +174,7 @@ body {
   display: inline-flex;
   align-items: center;
   transition: all 0.3s ease;
-  white-space: nowrap; /* 按钮文字决不换行 */
+  white-space: nowrap;
 }
 
 .btn-delete {
@@ -218,7 +188,7 @@ body {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  white-space: nowrap; /* 按钮文字决不换行 */
+  white-space: nowrap;
 }
 
 .btn-edit:hover,

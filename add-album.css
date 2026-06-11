@@ -15,21 +15,31 @@ body {
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-/* 🌟 卡片容器：移除所有毛玻璃白边，彻底解决白边框困扰 */
+/* card container*/
 .form-container {
-  background-color: transparent;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
   width: 100%;
   max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* card title  */
 .form-title {
   font-size: 24px;
   font-weight: bold;
@@ -41,13 +51,13 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* 🌟 占位符安全色：防止输入框提示字在暗色背景下变黑看不见 */
+/* place holder  */
 .form-container .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.4); 
-  opacity: 1; 
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 1;
 }
 
-/* 输入框定制 */
+/* input */
 .form-container .form-control {
   background-color: #111827;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -55,19 +65,19 @@ body {
   border-radius: 12px;
   padding: 12px;
 }
-
+/* select option  */
 .form-container .form-control option {
   background-color: #111827;
   color: #ffffff;
 }
 
-/* 聚焦状态，并强行阻断浏览器自带的任何外轮廓白框 */
+/* input onclick effect  */
 .form-container .form-control:focus {
   border-color: #654ea3;
   outline: none !important;
   --bs-focus-ring-color: rgba(101, 78, 163, 0.25);
   box-shadow: 0 0 0 0.25rem rgba(101, 78, 163, 0.25);
-  color: #ffffff; 
+  color: #ffffff;
 }
 
 .form-label {

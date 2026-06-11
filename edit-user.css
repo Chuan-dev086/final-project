@@ -4,7 +4,6 @@
 
 body {
     min-height: 100vh;
-    /* 保持与整体项目一致的流光渐变背景 */
     background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
@@ -21,17 +20,16 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* 中央半透明卡片容器 */
 .form-container {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-  width: 100%;
-  max-width: 500px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
 }
 
 .form-title {
@@ -45,8 +43,8 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-/* 🌟 通过增加父级提升权重，完美去掉 !important */
-.form-container .form-control {
+.form-container .form-control,
+.form-container .form-select {
     background-color: #111827;
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #ffffff;
@@ -54,7 +52,8 @@ body {
     padding: 12px;
 }
 
-.form-container .form-control:focus {
+.form-container .form-control:focus,
+.form-container .form-select:focus {
     border-color: #a78bfa;
     --bs-focus-ring-color: rgba(167, 139, 250, 0.25);
     box-shadow: 0 0 0 0.25rem rgba(167, 139, 250, 0.25);
@@ -68,7 +67,6 @@ body {
     font-weight: 500;
 }
 
-/* 霓虹紫/粉 提交按钮 */
 .btn-submit {
     background: linear-gradient(135deg, #725AC1, #a78bfa);
     color: white;
@@ -87,7 +85,6 @@ body {
     color: white;
 }
 
-/* 返回链接 */
 .btn-back {
     color: #7b89a8;
     text-decoration: none;

@@ -1,48 +1,49 @@
 <?php
 require 'header.php';
 
-// 1. 严格的安全检查：未登录或非管理员直接拦截
+// verify login status 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-
+// verify role (user cannot add album )
 if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') {
     echo "<script>alert('Unauthorized access!'); window.location.href='manage-albums.php';</script>";
     exit;
 }
 
-// 2. 读取所有组合，供下拉菜单（Select）选择
+// get group detail from DB 
 $groups_stmt = $db->query("SELECT id, group_name FROM groups ORDER BY group_name ASC");
 $groups = $groups_stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// let error become a variable (easy for debug )
 $error = '';
 
-// 3. 处理表单提交
+// post the form detail
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
+    $name = trim($_POST['name'] ?? '');     // trim can cut the spacing that user type in 
     $group_id = $_POST['group_id'] ?? '';
-    $songs = trim($_POST['songs'] ?? ''); // 🌟 接收新增的歌曲信息
+    $songs = trim($_POST['songs'] ?? ''); 
 
-    // 🌟 接收三个独立的日期输入框值
+    // the date detail 
     $year = trim($_POST['release_year'] ?? '');
     $month = trim($_POST['release_month'] ?? '');
     $day = trim($_POST['release_day'] ?? '');
 
-    // 验证所有字段（因为数据库全是 NOT NULL，所有字段均为必填）
+    // verify all the input if empty print out the error 
     if (empty($name) || empty($group_id) || empty($songs) || empty($year) || empty($month) || empty($day)) {
         $error = 'All fields are required! Please select a group and fill in the songs.';
     } else {
-        // 后端自动补零，确保写入数据库的 date 格式绝对标准 (YYYY-MM-DD)
+        // add the ‘0’ ensure the format of date 
         $month = (int)$month < 10 ? '0' . (int)$month : $month;
         $day   = (int)$day   < 10 ? '0' . (int)$day   : $day;
         $release_date = "$year-$month-$day";
 
-        // 🌟 从 Session 中自动抓取当前录入数据的管理员 ID，对应 created_by 字段
+        // get the detail who add album and store it in created_by variable 
         $created_by = $_SESSION['user_id'];
 
         try {
-            // 🌟 严格对应你的数据库字段进行高效插入
+            // insert the info from the form 
             $query = 'INSERT INTO albums (name, release_date, group_id, created_by, songs) 
                       VALUES (:name, :release_date, :group_id, :created_by, :songs)';
             $stmt = $db->prepare($query);
@@ -54,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':songs' => $songs
             ]);
 
-            // 添加成功后，重定向回专辑管理页
+            // if success redirect to manage album page
             header('Location: manage-albums.php');
             exit;
         } catch (PDOException $e) {
-            // 如果发生外键错误或其他数据库错误，捕获并提示出来
+            // if not success print out the DB error 
             $error = 'Database Error: ' . $e->getMessage();
         }
     }
@@ -105,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="mb-3">
                 <label for="songs" class="form-label">Songs List</label>
-                <textarea class="form-control" id="songs" name="songs" rows="6"
-                    placeholder="Type one song per line...&#10;Example:&#10;Song A&#10;Song B&#10;Song C"
+                <textarea class="form-control" id="songs" name="songs" rows="6" 
+                    placeholder="Type one song per line...&#10;Example:&#10;Song A&#10;Song B&#10;Song C"  
                     style="line-height: 1.6; resize: vertical; min-height: 120px;" required></textarea>
                 <div class="form-text text-white-50 small mt-1">
                     <i class="bi bi-info-circle me-1"></i>Press <b>Enter</b> to start a new song line.
@@ -117,6 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label class="form-label">Release Date</label>
                 <div class="row g-2">
                     <div class="col-4">
+                        <!-- date (internal function of PHP ) will get the current year of server 
+                         prevent user type year not exist  -->
                         <input type="number" class="form-control" name="release_year"
                             placeholder="Year (年)" min="1970" max="<?= date('Y') ?>" required>
                     </div>

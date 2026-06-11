@@ -7,15 +7,25 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// 预处理查询单组专辑的 SQL
-$albums_stmt = $db->prepare("SELECT id, name, release_date FROM albums WHERE group_id = :group_id ORDER BY release_date DESC");
+// 安全转义快捷函数
+function h($string) {
+    return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+}
 
-// 核心查询：高效统计各组的人数
-$query = "SELECT g.id, g.group_name, COUNT(ig.idol_id) AS dynamic_members_count 
-          FROM `groups` g 
-          LEFT JOIN idol_group ig ON g.id = ig.group_id 
-          GROUP BY g.id 
-          ORDER BY g.id ASC ";
+// 权限安全检查
+$is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'Admin';
+
+// 2. 核心大查询：直接统计成员数和专辑数
+$query = "SELECT 
+            g.id, 
+            g.group_name, 
+            (SELECT COUNT(ig.idol_id) FROM idol_group ig WHERE ig.group_id = g.id) AS dynamic_members_count,
+            COUNT(a.id) AS albums_count
+          FROM `groups` g
+          LEFT JOIN albums a ON g.id = a.group_id
+          GROUP BY g.id
+          ORDER BY g.id ASC";
+
 $stmt = $db->prepare($query);
 $stmt->execute();
 $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -36,34 +46,30 @@ $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <div class="container my-4">
-        <!-- 顶部导航区 -->
         <div class="d-flex justify-content-between align-items-center mb-4 px-2">
             <a href="dashboard.php" class="btn-action-back small">
                 <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
             </a>
-            <?php if ($_SESSION['role'] === 'Admin'): ?>
+            <?php if ($is_admin): ?>
                 <a href="add-group.php" class="btn btn-add-group small">
                     <i class="bi bi-plus-circle me-1"></i>Add New Group
                 </a>
             <?php endif; ?>
         </div>
 
-        <!-- 主玻璃卡片面板 -->
         <div class="glass-panel">
             <div class="mb-4">
                 <h2 class="gradient-title mb-1"><i class="bi bi-people-fill me-2"></i>Groups List</h2>
             </div>
 
-            <!-- 响应式水平保护盒：现在它会完美应对 min-width，在窗口过窄时提供安全的横向滚动条 -->
             <div class="table-responsive">
                 <table class="table table-glass align-middle mb-0">
                     <thead>
                         <tr>
-                            <!-- 通过升级后的 CSS 类名进行牢固的最小宽度防御 -->
                             <th class="col-id">ID</th>
                             <th class="col-group-name">Group Name</th>
                             <th class="col-members">Members Count</th>
-                            <th class="col-albums">Albums</th>
+                            <th class="col-albums">Albums Count</th>
                             <th class="text-center col-actions">Actions</th>
                         </tr>
                     </thead>
@@ -76,66 +82,35 @@ $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </tr>
                         <?php else: ?>
                             <?php foreach ($groups as $row): ?>
-                                <?php
-                                $albums_stmt->execute([':group_id' => $row['id']]);
-                                $group_albums = $albums_stmt->fetchAll(PDO::FETCH_ASSOC);
-                                ?>
                                 <tr>
-                                    <td><span class="custom-id"><?= $row['id'] ?></span></td>
-                                    <td><span class="custom-group-name fw-semibold"><?= $row['group_name'] ?></span></td>
+                                    <td><span class="custom-id"><?= h($row['id']) ?></span></td>
+                                    <td><span class="custom-group-name fw-semibold"><?= h($row['group_name']) ?></span></td>
                                     <td>
                                         <span class="custom-members">
-                                            <i class="bi bi-person-fill small me-1"></i><?= $row['dynamic_members_count'] ?>
+                                            <i class="bi bi-person-fill small me-1"></i><?= h($row['dynamic_members_count']) ?>
                                         </span>
                                     </td>
 
-                                    <!-- 已发行专辑列 -->
                                     <td>
-                                        <?php if (empty($group_albums)): ?>
-                                            <div class="text-white-50 small opacity-50 py-1">
-                                                <i class="bi bi-folder-symlink me-1"></i>No albums released
-                                            </div>
-                                        <?php else: ?>
-                                            <div class="d-flex flex-column gap-1 album-scroll-container">
-                                                <?php foreach ($group_albums as $alb): ?>
-
-                                                    <div class="d-flex align-items-center justify-content-between py-1 px-3 album-item-row">
-                                                        <div class="d-flex align-items-center gap-2">
-                                                            <span class="text-white small fw-medium text-truncate album-title-truncate" title="<?= $alb['name'] ?>">
-                                                                <?= $alb['name'] ?>
-                                                            </span>
-                                                            <span class="text-white-50 opacity-70 album-year-badge">
-                                                                (<?= date('Y', strtotime($alb['release_date'])) ?>)
-                                                            </span>
-                                                        </div>
-                                                        <a href="edit-album.php?id=<?= $alb['id'] ?>" class="text-decoration-none album-detail-link">
-                                                            Detail <i class="bi bi-arrow-right-short fs-6 align-middle"></i>
-                                                        </a>
-                                                    </div>
-
-                                                <?php endforeach; ?>
-                                            </div>
-                                        <?php endif; ?>
+                                        <span class="custom-albums">
+                                            <i class="bi bi-journal-album small me-1"></i><?= h($row['albums_count']) ?>
+                                        </span>
                                     </td>
 
-                                    <!-- 操作按钮列：保持文字牢固显示，绝不缩水隐藏 -->
                                     <td class="text-center">
                                         <div class="d-inline-flex gap-2">
-                                            <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                                <a href="edit-group.php?id=<?= $row['id'] ?>" class="btn-edit">
+                                            <?php if ($is_admin): ?>
+                                                <a href="edit-group.php?id=<?= urlencode($row['id']) ?>" class="btn-edit">
                                                     <i class="bi bi-pencil-square me-1"></i>Edit
                                                 </a>
-                                            <?php else: ?>
-                                                <a href="edit-group.php?id=<?= $row['id'] ?>" class="btn-edit">
-                                                    <i class="bi bi-eye-fill me-1"></i>View
-                                                </a>
-                                            <?php endif; ?>
-
-                                            <?php if ($_SESSION['role'] === 'Admin'): ?>
-                                                <a href="delete-group.php?id=<?= $row['id'] ?>"
+                                                <a href="delete-group.php?id=<?= urlencode($row['id']) ?>"
                                                     onclick="return confirm('Are you sure you want to delete this group?');"
                                                     class="btn-delete">
                                                     <i class="bi bi-trash3-fill me-1"></i>Delete
+                                                </a>
+                                            <?php else: ?>
+                                                <a href="edit-group.php?id=<?= urlencode($row['id']) ?>" class="btn-edit">
+                                                    <i class="bi bi-eye-fill me-1"></i>View
                                                 </a>
                                             <?php endif; ?>
                                         </div>
