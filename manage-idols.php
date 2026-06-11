@@ -1,18 +1,18 @@
 <?php
+// DRY principle 
 require 'header.php';
 
-// 检查用户是否登录
+// verify user login status 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
 
-// 💡 建议使用 strtolower 统一转纯小写判断角色，防止大小写字母不匹配
+// strtlower put all alphabet lowercase prevent case mismatch 
 $current_role = isset($_SESSION['role']) ? strtolower($_SESSION['role']) : 'user';
 $isAdmin = ($_SESSION['role'] === 'Admin');
 
-// 直接从数据库读取所有偶像数据（不使用 try-catch）
-// 🌟 核心修改：三表联查！通过中间表 idol_group，把当前偶像对应的所有团名用逗号拼成一句话
+// read all idol data from database  
 $query = "SELECT idols.*, GROUP_CONCAT(g.group_name SEPARATOR ', ') AS my_groups 
           FROM idols 
           LEFT JOIN idol_group ig ON idols.id = ig.idol_id
@@ -78,6 +78,7 @@ $idols = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><span class="custom-stage-name"><i class="bi bi-stars small me-1"></i><?= $idol['stage_name'] ?></span></td>
                                 <td><span class="custom-dob"><i class="bi bi-calendar-event small me-1"></i><?= $idol['dob'] ?></span></td>
                                 <td>
+                                    <!-- status verify statement (if-else statement ) -->
                                     <?php if (!empty($idol['my_groups'])): ?>
                                         <span class="custom-groups-row"><i class="bi bi-people-fill small me-1"></i><?= $idol['my_groups'] ?></span>
                                     <?php else: ?>
@@ -85,6 +86,7 @@ $idols = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <?php endif; ?>
                                 </td>
 
+                                <!-- for admin -->
                                 <?php if ($isAdmin): ?>
                                     <td>
                                         <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-1 gap-md-2">

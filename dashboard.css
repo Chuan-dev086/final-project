@@ -1,211 +1,195 @@
-        * {
-            font-family: 'Poppins', sans-serif;
-        }
+/* General */
+* {
+  font-family: "Poppins", sans-serif;
+}
 
-        /* bacckground  */
-        body {
-            min-height: 100vh;
-            background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color: white;
-            padding-top: 20px;
-        }
+body {
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: white;
+  padding-top: 20px;
+}
 
-        /* background animation  */
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
-            50% {
-                background-position: 100% 50%;
-            }
+/* Navbar */
+.glass-navbar {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 15px 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
 
-            100% {
-                background-position: 0% 50%;
-            }
-        }
+.logo-text {
+  letter-spacing: 1px;
+  background: linear-gradient(to right, #ffffff, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-        /*navbar text  */
-        .logo-text {
-            letter-spacing: 1px;
-            background: linear-gradient(to right, #ffffff, #a78bfa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+/* Search Bar (Optimized without !important) */
+.glass-navbar .search-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 6px 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
 
-        /* navbar  */
-        .glass-navbar {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 15px 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
+.glass-navbar .search-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #a78bfa;
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+  outline: none;
+}
 
-        /* role badge  */
-        .role-badge {
-            font-size: 0.75rem;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-        }
+.glass-navbar form button i {
+  pointer-events: none;
+}
 
-        .badge-admin {
-            background: rgba(75, 0, 130);
-            border: 1px solid rgba(255, 107, 107, 0.4);
-            color: #ff6b6b;
-        }
+/* Badges */
+.role-badge {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
 
-        .badge-manager {
-            background: rgba(255, 184, 76, 0.1);
-            border: 1px solid rgba(255, 184, 76, 0.4);
-            color: #ffb84c;
+.badge-admin {
+  background: rgba(75, 0, 130);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  color: #ff6b6b;
+}
+.badge-manager {
+  background: rgba(255, 184, 76, 0.1);
+  border: 1px solid rgba(255, 184, 76, 0.4);
+  color: #ffb84c;
+}
+.badge-user {
+  background: rgba(0, 245, 212, 0.1);
+  border: 1px solid rgba(0, 245, 212, 0.35);
+  color: #00f5d4;
+}
 
-        }
+/* Cards */
+.welcome-card {
+  padding: 30px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
 
-        .badge-user {
-            background: rgba(0, 245, 212, 0.1);
-            border: 1px solid rgba(0, 245, 212, 0.35);
-            color: #00f5d4;
-        }
+.welcome-title {
+  font-size: calc(1.6rem + 1.2vw);
+  font-weight: 700;
+}
+.gradient-text {
+  background: linear-gradient(to right, #a78bfa, #ff6b6b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #a78bfa;
+}
 
-        /* welcome block  */
-        .welcome-card {
-            padding: 30px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-        }
+.dashboard-card {
+  padding: 35px 30px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
 
-        .welcome-title {
-            font-size: calc(1.6rem + 1.2vw);
-            font-weight: 700;
-            line-height: 1.2;
-        }
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border-color: rgba(192, 132, 252, 0.4);
+}
 
-        .gradient-text {
-            background: linear-gradient(to right, #a78bfa, #ff6b6b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: #a78bfa;
-        }
+.card-icon {
+  font-size: 2.5rem;
+  color: #c084fc;
+}
+.card-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.card-title {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
 
-        /* DASHBOARD CARD */
-        .dashboard-card {
-            padding: 35px 30px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+/* Links & Buttons */
+.action-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #a78bfa;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
 
-        .dashboard-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            border-color: rgba(192, 132, 252, 0.4);
-        }
+.action-link:hover {
+  background: #725ac1;
+  border-color: #725ac1;
+  color: white;
+  padding-left: 20px;
+}
 
-        .card-icon {
-            font-size: 2.5rem;
-            color: #c084fc;
-        }
+.btn-nav-logout,
+.btn-nav-settings {
+  color: #ff6b6b;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 6px 15px;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
 
-        .card-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 5px;
-        }
+.btn-nav-logout:hover,
+.btn-nav-settings:hover {
+  background: #ff6b6b;
+  color: white;
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
+}
 
-        .card-title {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* button inside card  */
-        .action-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 25px;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: #a78bfa;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .action-link:hover {
-            background: #725AC1;
-            border-color: #725AC1;
-            color: white;
-            padding-left: 20px;
-            box-shadow: 0 0 15px rgba(114, 90, 193, 0.4);
-        }
-
-        /* logout button  */
-        .btn-nav-logout {
-            color: #ff6b6b;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 6px 15px;
-            border: 1px solid rgba(255, 107, 107, 0.2);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-nav-logout:hover {
-            background: #ff6b6b;
-            color: white;
-            box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
-        }
-
-        /* change password button  */
-        .btn-nav-settings {
-            color: #ff6b6b;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 6px 15px;
-            border: 1px solid rgba(255, 107, 107, 0.2);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-nav-settings:hover {
-            background: #ff6b6b;
-            color: white;
-            box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
-        }
-
-        @media (max-width: 576px) {
-            body {
-                padding: 10px 0;
-            }
-
-            .welcome-card,
-            .dashboard-card {
-                padding: 25px 20px;
-            }
-        }
+@media (max-width: 576px) {
+  body {
+    padding: 10px 0;
+  }
+  .welcome-card,
+  .dashboard-card {
+    padding: 25px 20px;
+  }
+}

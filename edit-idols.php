@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="edit-idols.php?id=<?php echo $id; ?>" method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Real Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="<?php echo $idol['name']; ?>" required>
+                <input type="text" class="form-control" id="name" name="name" value="<?= htmlspecialchars($idol['name']) ?>" required>
             </div>
 
             <div class="mb-3">
@@ -167,5 +167,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </a>
     </div>
 </body>
+<script>
+    // 标记页面是否有未保存的更改
+    let isDirty = false;
+
+    // 监听页面内所有输入框和下拉菜单的变化
+    const formFields = document.querySelectorAll('input, select');
+    formFields.forEach(field => {
+        field.addEventListener('input', () => {
+            isDirty = true;
+        });
+    });
+
+    // 当用户尝试关闭页面、刷新页面或点击跳转链接时触发
+    window.addEventListener('beforeunload', (event) => {
+        if (isDirty) {
+            // 浏览器会拦截并显示自带的确认框
+            event.preventDefault();
+            event.returnValue = ''; // 某些浏览器需要此设置
+        }
+    });
+
+    // 关键：在表单提交时，将标记设为 false
+    // 否则点击“保存”按钮正常提交时，也会被拦截
+    document.querySelector('form').addEventListener('submit', () => {
+        isDirty = false;
+    });
+</script>
 
 </html>

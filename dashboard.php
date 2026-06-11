@@ -34,16 +34,14 @@ if ($current_role === 'admin') {
 }
 
 if ($current_role === 'admin') {
-    // 👑 Admin 登录：4张卡片，要排成 2x2 阵型
-    // 外层 row 不需要强制居中类名
+//    if admin login the page will have 2x2 arrangement 
     $row_layout_class = "";
-    // 每张卡片在大屏幕上占 6 个格子 (12 ÷ 6 = 2，即一行刚好放2张，4张卡片自动分2行)
+    // bootstrap arrangement 
     $col_layout_class = "col-12 col-sm-6 col-md-6 col-lg-6";
 } else {
-    // 👤 User 或 Manager 登录：3张卡片，要水平居中
-    // 外层 row 注入 justify-content-center，让内部卡片向舞台中央靠拢
+/* if manager or user login  the page have one row arrangement 
+the card with place center and occupied one row  */
     $row_layout_class = "justify-content-center";
-    // 每张卡片在大屏幕上占 4 个格子 (12 ÷ 4 = 3，即一行刚好放满3张并完美对称)
     $col_layout_class = "col-12 col-sm-6 col-md-6 col-lg-4";
 }
 ?>
@@ -71,43 +69,32 @@ if ($current_role === 'admin') {
         <!-- navbar -->
         <header class="row">
             <div class="col-12">
-                <div class="glass-navbar d-flex  flex-column flex-sm-row justify-content-between align-items-center gap-3 gap-sm-0">
+                <div class="glass-navbar d-flex flex-wrap justify-content-between align-items-center gap-3">
                     <div class="d-flex align-items-center gap-3">
                         <span class="fw-bold tracking-wider logo-text">K-POP SYSTEM</span>
-                        <!-- role badge switch-case statement  -->
                         <?php switch ($current_role):
-                            case 'admin': ?>
-                                <span class="role-badge badge-admin">
-                                    <i class="bi bi-shield-fill-check me-1"></i>Admin
-                                </span>
-                                <?php break; ?>
-                            <?php
-                            case 'manager':
-                            ?>
-                                <span class="role-badge badge-manager">
-                                    <i class="bi bi-person-workspace me-1"></i>Manager
-                                </span>
-                                <?php break; ?>
-                            <?php
-                            default:
-                            ?>
-                                <span class="role-badge badge-user">
-                                    <i class="bi bi-person-fill me-1"></i>User
-                                </span>
-                                <?php break; ?>
-                        <?php endswitch; ?>
+                            case 'admin': ?> <span class="role-badge badge-admin"><i class="bi bi-shield-fill-check me-1"></i>Admin</span>
+                            <?php break;
+                            case 'manager': ?> <span class="role-badge badge-manager"><i class="bi bi-person-workspace me-1"></i>Manager</span>
+                            <?php break;
+                            default: ?> <span class="role-badge badge-user"><i class="bi bi-person-fill me-1"></i>User</span>
+                        <?php break;
+                        endswitch; ?>
                     </div>
-                    <div class="d-flex align-items-center gap-3 justify-content-center ">
-                        <a href="change-password.php" class="btn-nav-settings me-3">
-                            <i class="bi bi-key me-1"></i>Change Password
-                        </a>
-                        <a href="logout.php" onclick="return confirm('Confirm logout?')" class="btn-nav-logout">
-                            <i class="bi bi-box-arrow-right me-1"></i>Logout
-                        </a>
+                    <div class="d-flex align-items-center gap-2">
+                        <form action="search.php" method="GET" class="d-flex position-relative">
+                            <input type="text" name="q" class="search-input" style="padding-right: 40px;" placeholder="Search Name or Songs" required>
+                            <button type="submit" class="btn" style="position: absolute; right: 0; color: #a78bfa; height: 100%; border: none; background: transparent;">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                        <a href="change-password.php" class="btn-nav-settings"><i class="bi bi-key me-1"></i>Change Password </a>
+                        <a href="logout.php" onclick="return confirm('Confirm logout?')" class="btn-nav-logout"><i class="bi bi-box-arrow-right"></i>Logout</a>
                     </div>
                 </div>
             </div>
         </header>
+
         <!-- welcome card  -->
         <div class="row mb-4">
             <div class="col-12 text-center">

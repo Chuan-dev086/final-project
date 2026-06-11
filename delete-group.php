@@ -13,18 +13,19 @@ $id = $_GET['id'] ?? null;
 
 if ($id) {
     try {
-        // 先断开中间表 idol_group 的关联记录，防止外键约束报错
-        $clearRelQuery = "DELETE FROM idol_group WHERE group_id = :id";
-        $clearStmt = $db->prepare($clearRelQuery);
+        $db->beginTransaction(); // 开启事务
+
+        // 1. 删除关联
+        $clearStmt = $db->prepare("DELETE FROM idol_group WHERE group_id = :id");
         $clearStmt->execute([':id' => $id]);
 
-        // 再删除组合本身
-        $deleteQuery = "DELETE FROM `groups` WHERE id = :id";
-        $stmt = $db->prepare($deleteQuery);
+        // 2. 删除组合
+        $stmt = $db->prepare("DELETE FROM `groups` WHERE id = :id");
         $stmt->execute([':id' => $id]);
         
+        $db->commit(); // 全部成功，提交更改
     } catch (PDOException $e) {
-        // 如果发生数据库错误，可以在这里处理，或者直接跳回
+        $db->rollBack(); // 只要有一个出错，全部撤销
     }
 }
 

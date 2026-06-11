@@ -1,41 +1,46 @@
 <?php
+// DRY principle
 require 'header.php';
 
+// verify login status 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
 
+// verify role status 
 if ($_SESSION['role'] !== 'Admin') {
     echo "<script>alert('Unauthorized access!'); window.location.href='manage-idols.php';</script>";
     exit;
 }
-// 读取所有组合供下拉菜单选择 (注意字段名为 group_name)
+// get all group data for input select option
 $groups_stmt = $db->query("SELECT id, group_name FROM groups ORDER BY group_name ASC");
 $groups = $groups_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $error = '';
 
+// get the data of form 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $stage_name = trim($_POST['stage_name'] ?? '');
     $group_id = $_POST['group_id'] ?? ''; // 接收选中的组合 ID
 
-    // 接收三个独立的输入框值
+    // data of 3 data input 
     $year = trim($_POST['dob_year'] ?? '');
     $month = trim($_POST['dob_month'] ?? '');
     $day = trim($_POST['dob_day'] ?? '');
 
+    // must write all input in form 
     if (empty($name) || empty($stage_name) || empty($year) || empty($month) || empty($day)) {
         $error = 'All fields are required!';
     } else {
-        // 🌟 核心技巧：在后端用整型比对进行快速判断补零，确保数据库格式绝对标准
+        // put extra '0' for month and day to ensure the correct format 
         $month = (int)$month < 10 ? '0' . (int)$month : $month;
         $day   = (int)$day   < 10 ? '0' . (int)$day   : $day;
-        // 拼接成标准 YYYY-MM-DD 格式
+        // put as YYYY-MM-DD format 
         $dob = "$year-$month-$day";
 
-        // 1. 先插入爱豆主表
+        // insert data to idol table 
         $query = 'INSERT INTO idols (name, stage_name, dob) VALUES (:name, :stage_name, :dob)';
         $stmt = $db->prepare($query);
         $stmt->execute([
@@ -44,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':dob' => $dob
         ]);
 
-        // 2. 获取刚才生成的爱豆 ID
+        // get the ID of idol that just add 
         $idol_id = $db->lastInsertId();
 
-        // 3. 如果管理员选了组合，向中间表 idol_group 插入关联数据
+        // if admin select the group then insert data to idol_group table 
         if (!empty($group_id)) {
             $group_query = 'INSERT INTO idol_group (group_id, idol_id) VALUES (:group_id, :idol_id)';
             $group_stmt = $db->prepare($group_query);
@@ -113,7 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="row g-2">
                     <div class="col-4">
                         <input type="number" class="form-control" name="dob_year"
-                            placeholder="Year (年)" min="1970" max="<?= date('Y') ?>" required>
+                            placeholder="Year (年)" min="1970" max="<?= date('Y') ?>" required> 
+                            //"date" is PHP internal function that get the current year of server 
                     </div>
                     <div class="col-4">
                         <input type="number" class="form-control" name="dob_month"

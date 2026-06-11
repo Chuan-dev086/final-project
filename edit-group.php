@@ -71,8 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 🌟 复用 add-idols.css 保证极光通透感 -->
-    <link rel="stylesheet" href="add-idols.css">
+    <link rel="stylesheet" href="edit-group.css">
 </head>
 
 <body>
@@ -91,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
         <form action="edit-group.php?id=<?= $id ?>" method="POST">
             <div class="mb-4">
-                <label自动 for="group_name" class="form-label">Group Name</label>
+                <label for="group_name" class="form-label">Group Name</label>
                     <input type="text" class="form-control" id="group_name" name="group_name"
                         value="<?= $group['group_name'] ?>"
                         <?= $_SESSION['role'] !== 'Admin' ? 'readonly' : '' ?> required>

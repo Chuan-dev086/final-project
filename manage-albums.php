@@ -7,11 +7,18 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// htmlspecialchars function 
+function h(string $string): string
+{
+    return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+}
+
+
 // 2. 查询：获取所有专辑及其关联的组合名称
 $query = "SELECT a.*, g.group_name 
           FROM albums a 
           LEFT JOIN groups g ON a.group_id = g.id 
-          ORDER BY a.release_date DESC";
+          ORDER BY a.release_date ASC ";
 $albums = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -66,9 +73,9 @@ $albums = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
                         <?php else: ?>
                             <?php foreach ($albums as $row): ?>
                                 <tr>
-                                    <td><span class="custom-album-name"><i class="bi bi-disc-fill small me-2"></i><?= $row['name'] ?></span></td>
-                                    <td><span class="custom-group-row"><i class="bi bi-people-fill small me-2"></i><?= $row['group_name'] ?? 'Unknown' ?></span></td>
-                                    <td><span class="custom-date-row"><i class="bi bi-calendar3 small me-2"></i><?= $row['release_date'] ?></span></td>
+                                    <td><span class="custom-album-name"><i class="bi bi-disc-fill small me-2"></i><?= h($row['name']) ?></span></td>
+                                    <td><span class="custom-group-row"><i class="bi bi-people-fill small me-2"></i><?= h($row['group_name']) ?? 'Unknown' ?></span></td>
+                                    <td><span class="custom-date-row"><i class="bi bi-calendar3 small me-2"></i><?= h($row['release_date']) ?></span></td>
                                     <td class="text-center">
 
                                         <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>

@@ -1,26 +1,31 @@
 <?php
+// DRY principle 
 require 'header.php';
 
-// 权限校验
+// login status verify 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header('Location: login.php');
     exit;
 }
+
+// role verify 
 if ($_SESSION['role'] !== 'Admin') {
-    // 你可以弹窗提示，或者直接跳转回管理列表页
+
     echo "<script>alert('你没有权限进行此操作！'); window.location.href='manage-groups.php';</script>";
     exit;
 }
 
 $error = '';
 
+
+// get the form data 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $group_name = trim($_POST['group_name'] ?? '');
 
     if (empty($group_name)) {
         $error = 'Group Name is required!';
     } else {
-        // SQL 仅插入 group_name
+        // insert group name 
         $query = "INSERT INTO groups (group_name) VALUES (:group_name)";
         $stmt = $db->prepare($query);
         $stmt->execute([':group_name' => $group_name]);
@@ -66,5 +71,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
 </body>
+<script>
+    let isDirty = false;
+    document.querySelector('input').addEventListener('input', () => {
+        isDirty = true;
+    });
+    window.addEventListener('beforeunload', (e) => {
+        if (isDirty) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+    document.querySelector('form').addEventListener('submit', () => {
+        isDirty = false;
+    });
+</script>
 
 </html>

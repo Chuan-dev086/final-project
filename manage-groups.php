@@ -1,21 +1,24 @@
 <?php
+// DRY principle 
 require 'header.php';
 
-// 1. 登录验证
+// verify login status 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login-form.php');
     exit;
 }
 
-// 安全转义快捷函数
-function h($string) {
+// 安全转义快捷函数(prevent XSS attack )
+function h(string $string): string
+{
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 
-// 权限安全检查
+
+// role verify 
 $is_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'Admin';
 
-// 2. 核心大查询：直接统计成员数和专辑数
+// get all the count of idol，album and group from DB 
 $query = "SELECT 
             g.id, 
             g.group_name, 
@@ -100,6 +103,7 @@ $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="text-center">
                                         <div class="d-inline-flex gap-2">
                                             <?php if ($is_admin): ?>
+                                                <!-- urlencode is function to prevent URL damage if your id change  -->
                                                 <a href="edit-group.php?id=<?= urlencode($row['id']) ?>" class="btn-edit">
                                                     <i class="bi bi-pencil-square me-1"></i>Edit
                                                 </a>
