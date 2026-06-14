@@ -1,10 +1,15 @@
-/* General */
+/* --- General --- */
 * {
   font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   min-height: 100vh;
+  /* 移除滚动条的关键 */
+  overflow-x: hidden;
   background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -24,7 +29,7 @@ body {
   }
 }
 
-/* Navbar */
+/* --- Navbar & Search Bar (恢复之前的样式) --- */
 .glass-navbar {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
@@ -44,7 +49,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Search Bar (Optimized without !important) */
+/* 恢复之前的搜索栏样式 */
 .glass-navbar .search-input {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -52,6 +57,7 @@ body {
   padding: 6px 15px;
   border-radius: 10px;
   transition: all 0.3s ease;
+  width: 250px; /* 确保有固定宽度，根据需要调整 */
 }
 
 .glass-navbar .search-input:focus {
@@ -61,11 +67,7 @@ body {
   outline: none;
 }
 
-.glass-navbar form button i {
-  pointer-events: none;
-}
-
-/* Badges */
+/* --- Badges --- */
 .role-badge {
   font-size: 0.75rem;
   padding: 3px 10px;
@@ -75,24 +77,23 @@ body {
   display: inline-flex;
   align-items: center;
 }
-
 .badge-admin {
-  background: rgba(75, 0, 130);
-  border: 1px solid rgba(255, 107, 107, 0.4);
+  background: rgba(75, 0, 130, 0.5);
+  border: 1px solid #ff6b6b;
   color: #ff6b6b;
 }
 .badge-manager {
   background: rgba(255, 184, 76, 0.1);
-  border: 1px solid rgba(255, 184, 76, 0.4);
+  border: 1px solid #ffb84c;
   color: #ffb84c;
 }
 .badge-user {
   background: rgba(0, 245, 212, 0.1);
-  border: 1px solid rgba(0, 245, 212, 0.35);
+  border: 1px solid #00f5d4;
   color: #00f5d4;
 }
 
-/* Cards */
+/* --- Cards (包含玻璃效果) --- */
 .welcome-card {
   padding: 30px;
   border-radius: 24px;
@@ -105,13 +106,13 @@ body {
 .welcome-title {
   font-size: calc(1.6rem + 1.2vw);
   font-weight: 700;
+  color: white;
 }
 .gradient-text {
   background: linear-gradient(to right, #a78bfa, #ff6b6b);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #a78bfa;
 }
 
 .dashboard-card {
@@ -120,6 +121,10 @@ body {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
@@ -128,22 +133,34 @@ body {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   border-color: rgba(192, 132, 252, 0.4);
 }
+.dashboard-card .profile-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+}
+.dashboard-card .card-title {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
 
 .card-icon {
   font-size: 2.5rem;
   color: #c084fc;
+  margin-bottom: 10px;
 }
 .card-number {
   font-size: 2.5rem;
   font-weight: 700;
+  color: white;
   line-height: 1;
+  margin-bottom: 5px;
 }
 .card-title {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.9rem;
 }
 
-/* Links & Buttons */
+/* --- Action Links --- */
 .action-link {
   display: flex;
   align-items: center;
@@ -157,26 +174,22 @@ body {
   text-decoration: none;
   transition: all 0.3s ease;
 }
-
 .action-link:hover {
   background: #725ac1;
-  border-color: #725ac1;
   color: white;
   padding-left: 20px;
 }
 
+/* --- Logout & Settings --- */
 .btn-nav-logout,
 .btn-nav-settings {
   color: #ff6b6b;
   text-decoration: none;
   font-size: 0.9rem;
-  font-weight: 500;
   padding: 6px 15px;
   border: 1px solid rgba(255, 107, 107, 0.2);
   border-radius: 10px;
-  transition: all 0.3s ease;
 }
-
 .btn-nav-logout:hover,
 .btn-nav-settings:hover {
   background: #ff6b6b;
@@ -184,12 +197,11 @@ body {
   box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
 }
 
-@media (max-width: 576px) {
-  body {
-    padding: 10px 0;
-  }
-  .welcome-card,
-  .dashboard-card {
-    padding: 25px 20px;
-  }
+.profile-title {
+  font-size: 1.5rem !important; /* 根据需要调整大小 */
+  font-weight: 600;
+  color: white !important;
+}
+.row.g-3 {
+  align-items: stretch; /* 保证 flex 子项高度一致 */
 }

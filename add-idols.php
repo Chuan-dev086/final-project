@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 placeholder="Stage Name" required>
             </div>
 
-            <!-- 组合下拉选择框 -->
+            <!-- Group select  -->
             <div class="mb-3">
                 <label for="group_id" class="form-label">Group </label>
                 <select class="form-control" id="group_id" name="group_id">
@@ -113,21 +113,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
 
+            <!-- DOB -->
             <div class="mb-4">
                 <label class="form-label">Date of Birth</label>
                 <div class="row g-2">
                     <div class="col-4">
                         <input type="number" class="form-control" name="dob_year"
-                            placeholder="Year (年)" min="1970" max="<?= date('Y') ?>" required> 
-                            //"date" is PHP internal function that get the current year of server 
+                            placeholder="Year " min="1970" max="<?= date('Y') ?>" required> 
                     </div>
                     <div class="col-4">
                         <input type="number" class="form-control" name="dob_month"
-                            placeholder="Month (月)" min="1" max="12" required>
+                            placeholder="Month " min="1" max="12" required>
                     </div>
                     <div class="col-4">
                         <input type="number" class="form-control" name="dob_day"
-                            placeholder="Day (日)" min="1" max="31" required>
+                            placeholder="Day " min="1" max="31" required>
                     </div>
                 </div>
             </div>

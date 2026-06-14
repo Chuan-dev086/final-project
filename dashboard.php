@@ -7,6 +7,11 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login-form.php');
     exit;
 }
+
+$current_role = isset($_SESSION['role']) ? strtolower($_SESSION['role']) : 'user';
+
+$row_layout_class = "justify-content-center";
+$col_layout_class = "col-12 col-sm-6 col-md-6 col-lg-6";
 // take the username from session if not give default value as 'user'
 $username = $_SESSION['username'] ?? 'User';
 // verify role, if not, give default as user 
@@ -33,17 +38,8 @@ if ($current_role === 'admin') {
     $totalUsers = $stmtUsers->fetchColumn();
 }
 
-if ($current_role === 'admin') {
-//    if admin login the page will have 2x2 arrangement 
-    $row_layout_class = "";
-    // bootstrap arrangement 
-    $col_layout_class = "col-12 col-sm-6 col-md-6 col-lg-6";
-} else {
-/* if manager or user login  the page have one row arrangement 
-the card with place center and occupied one row  */
-    $row_layout_class = "justify-content-center";
-    $col_layout_class = "col-12 col-sm-6 col-md-6 col-lg-4";
-}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -157,22 +153,31 @@ the card with place center and occupied one row  */
                 </div>
             </div>
             <!-- for Admin only  -->
-            <?php if ($current_role === 'admin'): ?>
-                <div class="<?= $col_layout_class ?>">
-                    <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="card-icon mb-2">
-                                <i class="bi bi-person-gear"></i>
-                            </div>
-                            <div class="card-number"><?= $totalUsers ?></div>
-                            <div class="card-title">System Users</div>
+            <div class="<?= $col_layout_class ?>">
+                <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="card-icon mb-2">
+                            <i class="bi <?= ($current_role === 'admin') ? 'bi-person-gear' : 'bi-person-badge' ?>"></i>
                         </div>
+
+                        <div class="<?= ($current_role === 'admin') ? 'card-number' : 'card-number-placeholder' ?>">
+                            <?= ($current_role === 'admin') ? $totalUsers : '' ?>
+                        </div>
+                        <div class="card-title <?= ($current_role !== 'admin') ? 'profile-title' : '' ?>">
+                            <?= ($current_role === 'admin') ? 'System Users' : 'My Profile' ?>
+                        </div>
+                    </div>
+                    <?php if ($current_role === 'admin'): ?>
                         <a href="manage-users.php" class="action-link">
                             <span>Manage Users</span> <i class="bi bi-arrow-right-short fs-5"></i>
                         </a>
-                    </div>
+                    <?php else: ?>
+                        <a href="edit-profile.php" class="action-link">
+                            <span>Edit Profile</span> <i class="bi bi-arrow-right-short fs-5"></i>
+                        </a>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
         </div>
     </div>
     <!-- Bootstrap Bundle JS -->

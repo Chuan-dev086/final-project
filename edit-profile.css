@@ -1,0 +1,86 @@
+body {
+  min-height: 100vh;
+  /* 移除滚动条的关键 */
+  overflow-x: hidden;
+  background: linear-gradient(-45deg, #654ea3, #141e30, #243b55, #302b63);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: white;
+  padding-top: 20px;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 表单容器优化 */
+.edit-profile-card {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 40px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 输入框样式（去除了 important） */
+.glass-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 12px 15px;
+  border-radius: 12px;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #a78bfa;
+  outline: none;
+}
+
+.form-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #725ac1, #ff5252);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 25px;
+}
+
+/* 标签文字颜色 */
+.form-label {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+  display: block;
+}
+.action-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #a78bfa;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.action-link:hover {
+  background: #725ac1;
+  color: white;
+  padding-left: 20px;
+}
