@@ -1,23 +1,47 @@
 <?php
 require 'header.php';
 
-$searchQuery = $_GET['q'] ?? '';
-$results = [];
+// 1. 获取输入，削掉两边空格
+$searchQuery = isset($_GET['q']) ? trim($_GET['q']) : '';
 
-if (!empty(trim($searchQuery))) {
-    // 增加 birth_date 和 release_date 到搜索范围
-    $sql = "SELECT 'Idol' as type, name, id FROM idols WHERE name LIKE ? OR stage_name LIKE ? OR dob LIKE ?
-    UNION
-    SELECT 'Group' as type, group_name as name, id FROM groups WHERE group_name LIKE ?
-    UNION
-    SELECT 'Album' as type, name, id FROM albums WHERE name LIKE ? OR songs LIKE ? OR release_date LIKE ?";
+// 2. 【核心升级】把字符串里的 % 和 _ 符号全部死死去掉
+// 这样如果用户输入 "%%" 就会被过滤成 "", 从而触发下面的拦截
+$cleanQuery = str_replace(['%', '_'], '', $searchQuery);
 
-    $stmt = $db->prepare($sql);
-    $searchTerm = "%$searchQuery%";
-    // 现在总共有 7 个 ? 占位符，所以 execute 需要传入 7 个参数
-    $stmt->execute([$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// 3. 拦截空搜索（包括纯空格、纯百分号、纯下划线等恶意输入）
+if ($cleanQuery === '') {
+    echo "<script>alert('Please enter a valid keyword to search!'); window.location.href='dashboard.php';</script>";
+    exit;
 }
+
+// 4. 用过滤干净的关键词去绑定 SQL 查询
+$likeQuery = "%" . $cleanQuery . "%";
+
+// 升级版 SQL，继续完美支持艺名、真名、生日和发行日期数字
+$stmt = $db->prepare("
+    SELECT 'Idol' AS type, CONCAT(name, ' (', stage_name, ')') AS display_name, id 
+    FROM idols 
+    WHERE name LIKE ? OR stage_name LIKE ? OR dob LIKE ?
+    
+    UNION
+    
+    SELECT 'Group' AS type, group_name AS display_name, id 
+    FROM `groups` 
+    WHERE group_name LIKE ?
+    
+    UNION
+    
+    SELECT 'Album' AS type, name AS display_name, id 
+    FROM albums 
+    WHERE name LIKE ? OR release_date LIKE ?
+");
+
+$stmt->execute([
+    $likeQuery, $likeQuery, $likeQuery,
+    $likeQuery,
+    $likeQuery, $likeQuery
+]);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,9 +68,9 @@ if (!empty(trim($searchQuery))) {
                 ?>
                     <li class="list-group-item result-item">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-white ">
+                            <span class="text-white">
                                 <strong class="text-success">[<?= $row['type'] ?>]</strong>
-                                <?= htmlspecialchars($row['name']) ?>
+                                <?= htmlspecialchars($row['display_name']) ?>
                             </span>
                             <a href="<?= $link ?>" class="result-link">View Details</a>
                         </div>
