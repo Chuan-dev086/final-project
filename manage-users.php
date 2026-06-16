@@ -97,7 +97,7 @@ $users = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
                                         <!-- 防自杀机制：如果是当前登录的自己，不允许删除 -->
                                         <?php if ($row['id'] != $_SESSION['user_id']): ?>
-                                            <a href="delete-user.php?id=<?= $row['id'] ?>"
+                                            <a href="delete-users.php?id=<?= $row['id'] ?>"
                                                 onclick="return confirm('WARNING: Are you sure you want to permanently delete this user?');"
                                                 class="btn-delete">
                                                 <i class="bi bi-trash3-fill me-1"></i>Delete
