@@ -23,7 +23,7 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');     // trim can cut the spacing that user type in 
     $group_id = $_POST['group_id'] ?? '';
-    $songs = trim($_POST['songs'] ?? ''); 
+    $songs = trim($_POST['songs'] ?? '');
 
     // the date detail 
     $year = trim($_POST['release_year'] ?? '');
@@ -81,11 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <div class="form-container">
-        <h2 class="form-title"><i class="bi bi-disc-fill me-2"></i>Add New Album</h2>
+        <h2 class="form-title"><i class="me-2 bi bi-disc-fill"></i>Add New Album</h2>
 
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger" style="border-radius: 12px; background-color: #ef444422; color: #f87171; border: 1px solid #ef444444;">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo $error; ?>
+                <i class="me-2 bi bi-exclamation-triangle-fill"></i><?php echo $error; ?>
             </div>
         <?php endif; ?>
 
@@ -106,11 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="mb-3">
                 <label for="songs" class="form-label">Songs List</label>
-                <textarea class="form-control" id="songs" name="songs" rows="6" 
-                    placeholder="Type one song per line...&#10;Example:&#10;Song A&#10;Song B&#10;Song C"  
+                <textarea class="form-control" id="songs" name="songs" rows="6"
+                    placeholder="Type one song per line...&#10;Example:&#10;Song A&#10;Song B&#10;Song C"
                     style="line-height: 1.6; resize: vertical; min-height: 120px;" required></textarea>
-                <div class="form-text text-white-50 small mt-1">
-                    <i class="bi bi-info-circle me-1"></i>Press <b>Enter</b> to start a new song line.
+                <div class="mt-1 form-text text-white-50 small">
+                    <i class="me-1 bi bi-info-circle"></i>Press <b>Enter</b> to start a new song line.
                 </div>
             </div>
 
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <button type="submit" class="btn-submit">
-                <i class="bi bi-check-circle-fill me-2"></i>Add Album
+                <i class="me-2 bi bi-check-circle-fill"></i>Add Album
             </button>
         </form>
 
