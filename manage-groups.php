@@ -1,6 +1,6 @@
 <?php
 // DRY principle 
-require 'header.php';
+require './includes/header.php';
 
 // verify login status 
 if (!isset($_SESSION['user_id'])) {
@@ -44,59 +44,59 @@ $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="manage-groups.css">
+    <link rel="stylesheet" href="./css/manage-groups.css">
 </head>
 
 <body>
     <div class="container my-4">
-        <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+        <div class="d-flex mb-4 px-2 justify-content-between align-items-center">
             <a href="dashboard.php" class="btn-action-back small">
-                <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+                <i class="me-1 bi bi-arrow-left"></i>Back to Dashboard
             </a>
             <?php if ($is_admin): ?>
-                <a href="add-group.php" class="btn btn-add-group small">
-                    <i class="bi bi-plus-circle me-1"></i>Add New Group
+                <a href="./pages/add-group.php" class="btn btn-add-group small">
+                    <i class="me-1 bi bi-plus-circle"></i>Add New Group
                 </a>
             <?php endif; ?>
         </div>
 
         <div class="glass-panel">
             <div class="mb-4">
-                <h2 class="gradient-title mb-1"><i class="bi bi-people-fill me-2"></i>Groups List</h2>
+                <h2 class="mb-1 gradient-title"><i class="me-2 bi bi-people-fill"></i>Groups List</h2>
             </div>
 
             <div class="table-responsive">
-                <table class="table table-glass align-middle mb-0">
+                <table class="mb-0 table table-glass align-middle">
                     <thead>
                         <tr>
                             <th class="col-id">ID</th>
                             <th class="col-group-name">Group Name</th>
                             <th class="col-members">Members Count</th>
                             <th class="col-albums">Albums Count</th>
-                            <th class="text-center col-actions">Actions</th>
+                            <th class="col-actions text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($groups)): ?>
                             <tr>
-                                <td colspan="5" class="text-center text-white-50 py-5">
-                                    <i class="bi bi-folder-x fs-3 d-block mb-2"></i>No groups found.
+                                <td colspan="5" class="py-5 text-center text-white-50">
+                                    <i class="d-block mb-2 fs-3 bi bi-folder-x"></i>No groups found.
                                 </td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($groups as $row): ?>
                                 <tr>
                                     <td><span class="custom-id"><?= h($row['id']) ?></span></td>
-                                    <td><span class="custom-group-name fw-semibold"><?= h($row['group_name']) ?></span></td>
+                                    <td><span class="fw-semibold custom-group-name"><?= h($row['group_name']) ?></span></td>
                                     <td>
                                         <span class="custom-members">
-                                            <i class="bi bi-person-fill small me-1"></i><?= h($row['dynamic_members_count']) ?>
+                                            <i class="me-1 bi bi-person-fill small"></i><?= h($row['dynamic_members_count']) ?>
                                         </span>
                                     </td>
 
                                     <td>
                                         <span class="custom-albums">
-                                            <i class="bi bi-journal-album small me-1"></i><?= h($row['albums_count']) ?>
+                                            <i class="me-1 bi bi-journal-album small"></i><?= h($row['albums_count']) ?>
                                         </span>
                                     </td>
 
@@ -104,17 +104,17 @@ $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="d-inline-flex gap-2">
                                             <?php if ($is_admin): ?>
                                                 <!-- urlencode is function to prevent URL damage if your id change  -->
-                                                <a href="edit-group.php?id=<?= urlencode($row['id']) ?>" class="btn-edit">
-                                                    <i class="bi bi-pencil-square me-1"></i>Edit
+                                                <a href="./pages/edit-group.php?id=<?= urlencode($row['id']) ?>" class="btn-edit">
+                                                    <i class="me-1 bi bi-pencil-square"></i>Edit
                                                 </a>
-                                                <a href="delete-group.php?id=<?= urlencode($row['id']) ?>"
+                                                <a href="./actions/delete-group.php?id=<?= urlencode($row['id']) ?>"
                                                     onclick="return confirm('Are you sure you want to delete this group?');"
                                                     class="btn-delete">
-                                                    <i class="bi bi-trash3-fill me-1"></i>Delete
+                                                    <i class="me-1 bi bi-trash3-fill"></i>Delete
                                                 </a>
                                             <?php else: ?>
-                                                <a href="edit-group.php?id=<?= urlencode($row['id']) ?>" class="btn-edit">
-                                                    <i class="bi bi-eye-fill me-1"></i>View
+                                                <a href="./pages/edit-group.php?id=<?= urlencode($row['id']) ?>" class="btn-edit">
+                                                    <i class="me-1 bi bi-eye-fill"></i>View
                                                 </a>
                                             <?php endif; ?>
                                         </div>

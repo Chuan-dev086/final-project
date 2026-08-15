@@ -1,6 +1,6 @@
 <?php
 // DRY principle 
-require 'header.php';
+require '../includes/header.php';
 
 // login status verify 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 // role verify 
 if ($_SESSION['role'] !== 'Admin') {
 
-    echo "<script>alert('你没有权限进行此操作！'); window.location.href='manage-groups.php';</script>";
+    echo "<script>alert('你没有权限进行此操作！'); window.location.href='../manage-groups.php';</script>";
     exit;
 }
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $db->prepare($query);
         $stmt->execute([':group_name' => $group_name]);
 
-        header('Location: manage-groups.php');
+        header('Location: ../manage-groups.php');
         exit;
     }
 }
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="add-group.css">
+    <link rel="stylesheet" href="../css/add-group.css">
 </head>
 
 <body>
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger" style="border-radius: 12px; background-color: #ef444422; color: #f87171; border: 1px solid #ef444444;">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo $error; ?>
+                <i class="me-2 bi bi-exclamation-triangle-fill"></i><?php echo $error; ?>
             </div>
         <?php endif; ?>
         <form action="add-group.php" method="POST">
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit" class="btn-submit">Create Group</button>
         </form>
-        <a href="manage-groups.php" class="btn-back">
+        <a href="../manage-groups.php" class="btn-back">
             <i class="bi bi-arrow-left"></i> Back
         </a>
     </div>

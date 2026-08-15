@@ -1,5 +1,5 @@
 <?php
-require 'header.php';
+require './includes/header.php';
 
 // 1. 获取输入，削掉两边空格
 $searchQuery = isset($_GET['q']) ? trim($_GET['q']) : '';
@@ -51,7 +51,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Result</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="./css/search.css">
 </head>
 
 <body>

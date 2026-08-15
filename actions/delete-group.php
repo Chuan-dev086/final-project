@@ -1,6 +1,6 @@
 <?php
 // 1. 引入初始化文件（获取 $db 和 session）
-require 'header.php';
+require '../includes/header.php';
 
 // 2. 严格的权限校验：只有登录的 Admin 才能执行删除
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
@@ -30,7 +30,7 @@ if ($id) {
 }
 
 // 4. 执行完毕后，干净利落地重定向回组合管理页面
-header("Location: manage-groups.php");
+header("Location: ../manage-groups.php");
 exit; 
 
 ?>

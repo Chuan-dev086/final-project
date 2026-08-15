@@ -1,5 +1,5 @@
 <?php
-require 'header.php';
+require '../includes/header.php';
 
 // 1. 检查用户是否登录
 if (!isset($_SESSION['user_id'])) {
@@ -19,7 +19,7 @@ $stmt->execute([':id' => $id]);
 $album = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$album) {
-    echo "<script>alert('Album not found!'); window.location.href='manage-albums.php';</script>";
+    echo "<script>alert('Album not found!'); window.location.href='../manage-albums.php';</script>";
     exit;
 }
 
@@ -42,7 +42,7 @@ $songs_for_textarea = implode("\n", $tracklist);
 // 4. 处理表单保存逻辑（Admin 和 Manager）
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') {
-        echo "<script>alert('Unauthorized action!'); window.location.href='manage-albums.php';</script>";
+        echo "<script>alert('Unauthorized action!'); window.location.href='../manage-albums.php';</script>";
         exit;
     }
 
@@ -86,22 +86,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="add-idols.css">
+    <link rel="stylesheet" href="../css/add-idols.css">
 </head>
 <body>
     <div class="form-container" style="max-width: 550px;">
         
         <h2 class="form-title" style="background: linear-gradient(to right, #a78bfa, #ff6b6b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
             <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
-                <i class="bi bi-pencil-square me-2"></i>Edit Album
+                <i class="me-2 bi bi-pencil-square"></i>Edit Album
             <?php else: ?>
-                <i class="bi bi-disc-fill me-2"></i>Album Details
+                <i class="me-2 bi bi-disc-fill"></i>Album Details
             <?php endif; ?>
         </h2>
 
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger" style="border-radius: 12px; background-color: #ef444422; color: #f87171; border: 1px solid #ef444444;">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i><?= $error ?>
+                <i class="me-2 bi bi-exclamation-triangle-fill"></i><?= $error ?>
             </div>
         <?php endif; ?>
 
@@ -139,27 +139,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- 🌟 歌曲输入/展现区（已全面升级为一行一首） -->
             <div class="mb-4">
-                <label for="songs" class="form-label"><i class="bi bi-music-note-list me-1 text-info"></i> Songs / Tracklist</label>
+                <label for="songs" class="form-label"><i class="me-1 text-info bi bi-music-note-list"></i> Songs / Tracklist</label>
                 
                 <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
                     <!-- 情况 A：Admin/Manager 看到的是大文本域，可以回车换行编辑 -->
                     <textarea class="form-control" id="songs" name="songs" rows="6" 
                               placeholder="Type one song per line...&#10;Example:&#10;Song A&#10;Song B&#10;Song C" 
                               style="line-height: 1.6; resize: vertical; min-height: 120px;"><?= $songs_for_textarea ?></textarea>
-                    <div class="form-text text-white-50 small mt-1">
-                        <i class="bi bi-info-circle me-1"></i>Press <b>Enter</b> to start a new song line.
+                    <div class="mt-1 form-text text-white-50 small">
+                        <i class="me-1 bi bi-info-circle"></i>Press <b>Enter</b> to start a new song line.
                     </div>
                 <?php else: ?>
                     <!-- 情况 B：普通 User 看到的是高颜值数字化动态音轨列表 -->
                     <div class="p-3" style="background: rgba(17, 24, 39, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
                         <?php if (empty($tracklist)): ?>
-                            <div class="text-white-50 small text-center py-2">No tracks in this album.</div>
+                            <div class="py-2 text-white-50 text-center small">No tracks in this album.</div>
                         <?php else: ?>
                             <div class="d-flex flex-column gap-2">
                                 <?php $index = 1; foreach ($tracklist as $song_title): ?>
-                                    <div class="d-flex align-items-center justify-content-between py-2 px-3" 
+                                    <div class="d-flex py-2 px-3 align-items-center justify-content-between" 
                                          style="background: rgba(255, 255, 255, 0.03); border-radius: 10px; ">
-                                        <div class="d-flex align-items-center gap-3">
+                                        <div class="d-flex gap-3 align-items-center">
                                             <span class="text-white-50 small" style="font-family: monospace; width: 20px;">
                                                 <?= str_pad($index++, 2, '0', STR_PAD_LEFT) ?>
                                             </span>
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <?= $song_title ?>
                                             </span>
                                         </div>
-                                        <i class="bi bi-play-circle-fill text-white-50" style="font-size: 14px;"></i>
+                                        <i class="text-white-50 bi bi-play-circle-fill" style="font-size: 14px;"></i>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -179,12 +179,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- 只有 Admin 和 Manager 展现 Save 按钮 -->
             <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #725ac1, #a78bfa); color: white; margin-top: 10px;">
-                    <i class="bi bi-save-fill me-2"></i>Save Changes
+                    <i class="me-2 bi bi-save-fill"></i>Save Changes
                 </button>
             <?php endif; ?>
         </form>
         
-        <a href="manage-albums.php" class="btn-back">
+        <a href="../manage-albums.php" class="btn-back">
             <i class="bi bi-arrow-left"></i> Back to Albums
         </a>
     </div>

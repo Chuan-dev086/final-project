@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // 🌟 3. 权限校验：只有 Admin 或 Manager 才可以执行删除 CRUD
 if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') {
-    echo "<script>alert('Unauthorized access!'); window.location.href='manage-albums.php';</script>";
+    echo "<script>alert('Unauthorized access!'); window.location.href='../manage-albums.php';</script>";
     exit;
 }
 
@@ -28,7 +28,7 @@ if ($id) {
 }
 
 // 5. 执行完毕后，干净利落地重定向回专辑管理列表页
-header("Location: manage-albums.php");
+header("Location:../manage-albums.php");
 exit; 
 
 ?> 

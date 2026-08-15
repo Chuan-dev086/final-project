@@ -1,5 +1,5 @@
 <?php
-require 'header.php'; // 引入已有的 session_start() 和 $db 连接
+require '../includes/header.php'; // 引入已有的 session_start() 和 $db 连接
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $username;
 
             // 更新成功，直接跳转回仪表盘
-            header("Location: dashboard.php");
+            header("Location:../dashboard.php");
             exit;
         } else {
             echo "Database update failed.";
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Please fill in all fields.";
     }
 } else {
-    header("Location: dashboard.php");
+    header("Location: ../dashboard.php");
     exit;
 }
 ?> 

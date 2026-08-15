@@ -1,6 +1,6 @@
 <?php
 // DRY principle
-require 'header.php';
+require './includes/header.php';
 
 // check if no login yet ,redirect to login-form 
 if (!isset($_SESSION['user_id'])) {
@@ -57,7 +57,7 @@ if ($current_role === 'admin') {
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- link CSS  -->
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
 </head>
 
 <body>
@@ -65,26 +65,26 @@ if ($current_role === 'admin') {
         <!-- navbar -->
         <header class="row">
             <div class="col-12">
-                <div class="glass-navbar d-flex flex-wrap justify-content-between align-items-center gap-3">
-                    <div class="d-flex align-items-center gap-3">
+                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center glass-navbar">
+                    <div class="d-flex gap-3 align-items-center">
                         <span class="fw-bold tracking-wider logo-text">K-POP SYSTEM</span>
                         <?php switch ($current_role):
-                            case 'admin': ?> <span class="role-badge badge-admin"><i class="bi bi-shield-fill-check me-1"></i>Admin</span>
+                            case 'admin': ?> <span class="badge-admin role-badge"><i class="me-1 bi bi-shield-fill-check"></i>Admin</span>
                             <?php break;
-                            case 'manager': ?> <span class="role-badge badge-manager"><i class="bi bi-person-workspace me-1"></i>Manager</span>
+                            case 'manager': ?> <span class="badge-manager role-badge"><i class="me-1 bi bi-person-workspace"></i>Manager</span>
                             <?php break;
-                            default: ?> <span class="role-badge badge-user"><i class="bi bi-person-fill me-1"></i>User</span>
+                            default: ?> <span class="badge-user role-badge"><i class="me-1 bi bi-person-fill"></i>User</span>
                         <?php break;
                         endswitch; ?>
                     </div>
-                    <div class="d-flex align-items-center gap-2">
+                    <div class="d-flex gap-2 align-items-center">
                         <form action="search.php" method="GET" class="d-flex position-relative">
                             <input type="text" name="q" class="search-input" style="padding-right: 40px;" placeholder="Search Name or Songs" required>
                             <button type="submit" class="btn" style="position: absolute; right: 0; color: #a78bfa; height: 100%; border: none; background: transparent;">
                                 <i class="bi bi-search"></i>
                             </button>
                         </form>
-                        <a href="change-password.php" class="btn-nav-settings"><i class="bi bi-key me-1"></i>Change Password </a>
+                        <a href="change-password.php" class="btn-nav-settings"><i class="me-1 bi bi-key"></i>Change Password </a>
                         <a href="logout.php" onclick="return confirm('Confirm logout?')" class="btn-nav-logout"><i class="bi bi-box-arrow-right"></i>Logout</a>
                     </div>
                 </div>
@@ -95,7 +95,7 @@ if ($current_role === 'admin') {
         <div class="row mb-4">
             <div class="col-12 text-center">
                 <div class="welcome-card">
-                    <h1 class="welcome-title mb-2">
+                    <h1 class="mb-2 welcome-title">
                         Welcome Back, <span class="gradient-text"><?= $username ?></span>
                     </h1>
                 </div>
@@ -105,9 +105,9 @@ if ($current_role === 'admin') {
         <div class="row g-3 g-md-4 <?= $row_layout_class ?>">
             <!-- idols -->
             <div class="<?= $col_layout_class ?>">
-                <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column h-100 justify-content-between dashboard-card">
                     <div>
-                        <div class="card-icon mb-2">
+                        <div class="mb-2 card-icon">
                             <i class="bi bi-person-badge-fill"></i>
                         </div>
                         <div class="card-number"><?= $totalIdols ?></div>
@@ -116,15 +116,15 @@ if ($current_role === 'admin') {
                     <a href="manage-idols.php" class="action-link">
                         <!-- if role is admin button will become manage idols if not is view idols  -->
                         <span><?= ($current_role === 'admin') ? 'Manage Idols' : 'View Idols' ?></span>
-                        <i class="bi bi-arrow-right-short fs-5"></i>
+                        <i class="fs-5 bi bi-arrow-right-short"></i>
                     </a>
                 </div>
             </div>
             <!-- Groups -->
             <div class="<?= $col_layout_class ?>">
-                <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column h-100 justify-content-between dashboard-card">
                     <div>
-                        <div class="card-icon mb-2">
+                        <div class="mb-2 card-icon">
                             <i class="bi bi-people-fill"></i>
                         </div>
                         <div class="card-number"><?= $totalGroups ?></div>
@@ -132,15 +132,15 @@ if ($current_role === 'admin') {
                     </div>
                     <a href="manage-groups.php" class="action-link">
                         <span><?= ($current_role === 'admin') ? 'Manage Groups' : 'View Groups' ?></span>
-                        <i class="bi bi-arrow-right-short fs-5"></i>
+                        <i class="fs-5 bi bi-arrow-right-short"></i>
                     </a>
                 </div>
             </div>
             <!-- Albums  -->
             <div class="<?= $col_layout_class ?>">
-                <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column h-100 justify-content-between dashboard-card">
                     <div>
-                        <div class="card-icon mb-2">
+                        <div class="mb-2 card-icon">
                             <i class="bi bi-disc-fill"></i>
                         </div>
                         <div class="card-number"><?= $totalAlbums ?></div>
@@ -148,15 +148,15 @@ if ($current_role === 'admin') {
                     </div>
                     <a href="manage-albums.php" class="action-link">
                         <span><?= ($current_role === 'admin' || $current_role === 'manager') ? 'Manage Albums' : 'View Albums' ?></span>
-                        <i class="bi bi-arrow-right-short fs-5"></i>
+                        <i class="fs-5 bi bi-arrow-right-short"></i>
                     </a>
                 </div>
             </div>
             <!-- for Admin only  -->
             <div class="<?= $col_layout_class ?>">
-                <div class="dashboard-card h-100 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column h-100 justify-content-between dashboard-card">
                     <div>
-                        <div class="card-icon mb-2">
+                        <div class="mb-2 card-icon">
                             <i class="bi <?= ($current_role === 'admin') ? 'bi-person-gear' : 'bi-person-badge' ?>"></i>
                         </div>
 
@@ -168,12 +168,12 @@ if ($current_role === 'admin') {
                         </div>
                     </div>
                     <?php if ($current_role === 'admin'): ?>
-                        <a href="manage-users.php" class="action-link">
-                            <span>Manage Users</span> <i class="bi bi-arrow-right-short fs-5"></i>
+                        <a href="./manage-users.php" class="action-link">
+                            <span>Manage Users</span> <i class="fs-5 bi bi-arrow-right-short"></i>
                         </a>
                     <?php else: ?>
-                        <a href="edit-profile.php" class="action-link">
-                            <span>Edit Profile</span> <i class="bi bi-arrow-right-short fs-5"></i>
+                        <a href="./pages/edit-profile.php" class="action-link">
+                            <span>Edit Profile</span> <i class="fs-5 bi bi-arrow-right-short"></i>
                         </a>
                     <?php endif; ?>
                 </div>

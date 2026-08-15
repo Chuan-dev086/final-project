@@ -1,6 +1,6 @@
 <?php
 //DRY principle
-require 'header.php';
+require '../includes/header.php';
 
 // verify status if no login redirect to login form 
 if (!isset($_SESSION['user_id'])) {
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // if not admin redirect to manage idol page 
 if ($_SESSION['role'] !== 'Admin') {
-    echo "<script>alert('Unauthorized access!'); window.location.href='manage-idols.php';</script>";
+    echo "<script>alert('Unauthorized access!'); window.location.href='../manage-idols.php';</script>";
     exit;
 }
 // if ID exist get ID  if not put id as null string 
@@ -23,6 +23,6 @@ if (!empty($id)) {
     $stmt->execute([':id' => $id]);
 }
 
-header('Location: manage-idols.php');
+header('Location: ../manage-idols.php');
 exit;
 ?>

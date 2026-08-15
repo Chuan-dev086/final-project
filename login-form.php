@@ -1,6 +1,6 @@
 <?php
 // DRY principle 
-require 'header.php';
+require './includes/header.php';
 
 // if user already login redirected to dashboard 
 if (isset($_SESSION['user_id'])) {
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="login-form.css">
+    <link rel="stylesheet" href="./css/login-form.css">
 </head>
 
 <body>
@@ -109,17 +109,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <?php if (!empty($error)): ?>
                         <div class="mb-3 p-3 text-center small"
                             style="background: rgba(220, 53, 69, 0.15); border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 12px; color: #f87171;">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i><?= $error ?>
+                            <i class="me-2 bi bi-exclamation-triangle-fill"></i><?= $error ?>
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($success_msg)): ?>
                         <div class="mb-3 p-3 text-center small"
                             style="background: rgba(25, 135, 84, 0.15); border: 1px solid rgba(25, 135, 84, 0.3); border-radius: 12px; color: #75b798;">
-                            <i class="bi bi-check-circle-fill me-2"></i><?= $success_msg ?>
+                            <i class="me-2 bi bi-check-circle-fill"></i><?= $success_msg ?>
                         </div>
                     <?php endif; ?>
                     <div id="login-section">
-                        <h1 class="login-title text-center mb-4">Login Your Account</h1>
+                        <h1 class="mb-4 text-center login-title">Login Your Account</h1>
                         <form method="POST">
                             <input type="hidden" name="action" value="login">
                             <div class="mb-3">
@@ -132,19 +132,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             </div>
                             <input type="hidden" name="role" value="User">
 
-                            <button type="submit" class="btn-signup w-100 mt-3">Login</button>
+                            <button type="submit" class="mt-3 btn-signup w-100">Login</button>
                         </form>
 
-                        <div class="text-end mt-3">
-                            <a href="javascript:void(0);" onclick="toggleForm('reset')" class="text-decoration-none small text-white-50">
-                                <i class="bi bi-question-circle me-1"></i>Forgot Password? Reset It
+                        <div class="mt-3 text-end">
+                            <a href="javascript:void(0);" onclick="toggleForm('reset')" class="text-decoration-none text-white-50 small">
+                                <i class="me-1 bi bi-question-circle"></i>Forgot Password? Reset It
                             </a>
                         </div>
                     </div>
 
                     <!-- reset password  -->
                     <div id="reset-section" style="display: none;">
-                        <h1 class="login-title text-center mb-4" style="background: linear-gradient(to right, #ff6b6b, #ff8e53); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                        <h1 class="mb-4 text-center login-title" style="background: linear-gradient(to right, #ff6b6b, #ff8e53); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
                             Reset Password
                         </h1>
                         <form method="POST">
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label text-warning"><i class="bi bi-key-fill me-1"></i>Enter New Password</label>
+                                <label class="form-label text-warning"><i class="me-1 bi bi-key-fill"></i>Enter New Password</label>
                                 <input type="password" name="new_password" class="form-control" placeholder="Set your new custom password" required>
                             </div>
 
@@ -170,9 +170,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             </button>
                         </form>
 
-                        <div class="text-start mt-4">
-                            <a href="javascript:void(0);" onclick="toggleForm('login')" class="text-decoration-none small text-white-50">
-                                <i class="bi bi-arrow-left me-1"></i>Back to Login
+                        <div class="mt-4 text-start">
+                            <a href="javascript:void(0);" onclick="toggleForm('login')" class="text-decoration-none text-white-50 small">
+                                <i class="me-1 bi bi-arrow-left"></i>Back to Login
                             </a>
                         </div>
                     </div>
@@ -180,8 +180,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center gap-5 mx-auto pt-3">
-                <a href="registration-form.php" class="text-decoration-none small text-white-50">
+            <div class="d-flex gap-5 pt-3 justify-content-center align-items-center mx-auto">
+                <a href="registration-form.php" class="text-decoration-none text-white-50 small">
                     Don't Have Account? Sign up here <i class="bi bi-arrow-right-circle"></i>
                 </a>
             </div>

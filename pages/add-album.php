@@ -1,5 +1,5 @@
 <?php
-require 'header.php';
+require '../includes/header.php';
 
 // verify login status 
 if (!isset($_SESSION['user_id'])) {
@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 // verify role (user cannot add album )
 if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') {
-    echo "<script>alert('Unauthorized access!'); window.location.href='manage-albums.php';</script>";
+    echo "<script>alert('Unauthorized access!'); window.location.href='../manage-albums.php';</script>";
     exit;
 }
 
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             // if success redirect to manage album page
-            header('Location: manage-albums.php');
+            header('Location: ../manage-albums.php');
             exit;
         } catch (PDOException $e) {
             // if not success print out the DB error 
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="add-album.css">
+    <link rel="stylesheet" href="../css/add-album.css">
 </head>
 
 <body>
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </button>
         </form>
 
-        <a href="manage-albums.php" class="btn-back">
+        <a href="../manage-albums.php" class="btn-back">
             <i class="bi bi-arrow-left"></i> Back to Albums
         </a>
     </div>

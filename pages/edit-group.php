@@ -1,5 +1,5 @@
 <?php
-require 'header.php';
+require '../includes/header.php';
 
 // 1. 登录校验
 if (!isset($_SESSION['user_id'])) {
@@ -19,7 +19,7 @@ $stmt->execute([':id' => $id]);
 $group = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$group) {
-    echo "<script>alert('Group not found!'); window.location.href='manage-groups.php';</script>";
+    echo "<script>alert('Group not found!'); window.location.href='../manage-groups.php';</script>";
     exit;
 }
 
@@ -40,7 +40,7 @@ $error = '';
 // 4. 处理表单修改逻辑（只有 Admin 有权修改提交）
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_SESSION['role'] !== 'Admin') {
-        echo "<script>alert('Only Admin can edit!'); window.location.href='manage-groups.php';</script>";
+        echo "<script>alert('Only Admin can edit!'); window.location.href='../manage-groups.php';</script>";
         exit;
     }
 
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':group_name' => $group_name,
         ':id' => $id
     ]);
-    header('Location: manage-groups.php');
+    header('Location: ../manage-groups.php');
     exit;
 }
 
@@ -71,21 +71,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="edit-group.css">
+    <link rel="stylesheet" href="../css/edit-group.css">
 </head>
 
 <body>
     <div class="form-container">
         <h2 class="form-title" style="background: linear-gradient(to right, #a78bfa, #ff6b6b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
             <?php if ($_SESSION['role'] === 'Admin'): ?>
-                <i class="bi bi-pencil-square me-2"></i>Edit Group
+                <i class="me-2 bi bi-pencil-square"></i>Edit Group
             <?php else: ?>
-                <i class="bi bi-eye-fill me-2"></i>Group Details
+                <i class="me-2 bi bi-eye-fill"></i>Group Details
             <?php endif; ?>
         </h2>
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger" style="border-radius: 12px; background-color: #ef444422; color: #f87171; border: 1px solid #ef444444;">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i><?= $error ?>
+                <i class="me-2 bi bi-exclamation-triangle-fill"></i><?= $error ?>
             </div>
         <?php endif; ?>
         <form action="edit-group.php?id=<?= $id ?>" method="POST">
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php else: ?>
                         <?php foreach ($members as $name): ?>
                             <span style="background: rgba(167, 139, 250, 0.15); color: #c084fc; border: 1px solid rgba(167, 139, 250, 0.3); padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 500;">
-                                <i class="bi bi-person-badge-fill me-1 small"></i><?= $name ?>
+                                <i class="me-1 bi bi-person-badge-fill small"></i><?= $name ?>
                             </span>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -115,12 +115,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- 只有管理员显示 Save 按钮 -->
             <?php if ($_SESSION['role'] === 'Admin'): ?>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #725ac1, #a78bfa); color: white;">
-                    <i class="bi bi-save-fill me-2"></i>Save Changes
+                    <i class="me-2 bi bi-save-fill"></i>Save Changes
                 </button>
             <?php endif; ?>
         </form>
 
-        <a href="manage-groups.php" class="btn-back">
+        <a href="../manage-groups.php" class="btn-back">
             <i class="bi bi-arrow-left"></i> Back to Groups
         </a>
     </div>

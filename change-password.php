@@ -1,5 +1,5 @@
 <?php
-require 'header.php'; // 确保这里引入了你的数据库连接 $db 并开启了 session
+require './includes/header.php'; // 确保这里引入了你的数据库连接 $db 并开启了 session
 
 // 1. 安全检查：如果未登录，直接踢回登录页
 if (!isset($_SESSION['user_id'])) {
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="change-password.css">
+    <link rel="stylesheet" href="./css/change-password.css">
 </head>
 
 <body>
@@ -76,16 +76,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="password-card">
-                    <h1 class="password-title text-center mb-2">Change Password</h1>
+                    <h1 class="mb-2 text-center password-title">Change Password</h1>
                     <?php if (!empty($error)): ?>
                         <div class="alert alert-danger" style="border-radius: 12px; background-color: #ef444422; color: #f87171; border: 1px solid #ef444444;">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo $error; ?>
+                            <i class="me-2 bi bi-exclamation-triangle-fill"></i><?php echo $error; ?>
                         </div>
                     <?php endif; ?>
 
                     <?php if (!empty($success)): ?>
                         <div class="alert alert-success" style="border-radius: 12px; background-color: #10b98122; color: #34d399; border: 1px solid #10b98144;">
-                            <i class="bi bi-check-circle-fill me-2"></i><?php echo $success; ?>
+                            <i class="me-2 bi bi-check-circle-fill"></i><?php echo $success; ?>
                         </div>
                     <?php endif; ?>
 
@@ -110,11 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 placeholder="Re-enter your new password" required>
                         </div>
 
-                        <button type="submit" class="btn-password"><i class="bi bi-arrow-left ms-1"></i>Update Password </button>
+                        <button type="submit" class="btn-password"><i class="ms-1 bi bi-arrow-left"></i>Update Password </button>
                     </form>
                 </div>
 
-                <div class="d-flex justify-content-center align-items-center gap-4 pt-4">
+                <div class="d-flex gap-4 pt-4 justify-content-center align-items-center">
                     <a href="dashboard.php" class="bottom-link">
                         <i class="bi bi-arrow-left-circle"></i> Back to Directory
                     </a>

@@ -1,5 +1,5 @@
 <?php
-require 'header.php';
+require '../includes/header.php';
 
 // 1. 严格权限校验：只有 Admin 才能进这个页面
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
@@ -19,7 +19,7 @@ $stmt->execute([':id' => $id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-    echo "<script>alert('User not found!'); window.location.href='manage-users.php';</script>";
+    echo "<script>alert('User not found!'); window.location.href='../manage-users.php';</script>";
     exit;
 }
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($result) {
                 $_SESSION['username'] = $username; // 同步更新当前 Session
-                header('Location: dashboard.php'); // 改自己就跳回仪表盘
+                header('Location: ../dashboard.php'); // 改自己就跳回仪表盘
                 exit;
             }
         }
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updateQuery = "UPDATE users SET role = :role WHERE id = :id";
         $updateStmt = $db->prepare($updateQuery);
         if ($updateStmt->execute([':role' => $role, ':id' => $id])) {
-            header('Location: manage-users.php'); // 改别人就跳回用户管理列表
+            header('Location: ../manage-users.php'); // 改别人就跳回用户管理列表
             exit;
         }
     }
@@ -72,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="edit-user.css">
+    <link rel="stylesheet" href="../css/edit-user.css">
 </head>
 
 <body>
     <div class="form-container" style="max-width: 520px;">
 
         <h2 class="form-title" style="background: linear-gradient(to right, #ff6b6b, #ff8e53); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-            <i class="bi bi-person-gear me-2"></i><?= $is_me ? 'Edit My Profile' : 'Edit User Role' ?>
+            <i class="me-2 bi bi-person-gear"></i><?= $is_me ? 'Edit My Profile' : 'Edit User Role' ?>
         </h2>
 
         <form action="edit-user.php?id=<?= $id ?>" method="POST">
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php if ($is_me): ?>
                         <input type="text" class="form-control" name="username" value="<?= htmlspecialchars($user['username']) ?>" required style="background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1);">
                     <?php else: ?>
-                        <span class="fw-semibold text-white fs-5 d-block"><i class="bi bi-person me-2 text-primary"></i><?= htmlspecialchars($user['username']) ?></span>
+                        <span class="d-block fw-semibold text-white fs-5"><i class="me-2 text-primary bi bi-person"></i><?= htmlspecialchars($user['username']) ?></span>
                     <?php endif; ?>
                 </div>
 
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php if ($is_me): ?>
                         <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($user['email']) ?>" required style="background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1);">
                     <?php else: ?>
-                        <span class="text-white-50 d-block"><i class="bi bi-envelope me-2 text-info"></i><?= htmlspecialchars($user['email']) ?></span>
+                        <span class="d-block text-white-50"><i class="me-2 text-info bi bi-envelope"></i><?= htmlspecialchars($user['email']) ?></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -114,18 +114,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
 
                 <?php if ($is_me): ?>
-                    <div class="form-text text-warning small mt-2">
-                        <i class="bi bi-exclamation-circle me-1"></i>You cannot demote your own account while logged in.
+                    <div class="mt-2 form-text text-warning small">
+                        <i class="me-1 bi bi-exclamation-circle"></i>You cannot demote your own account while logged in.
                     </div>
                 <?php endif; ?>
             </div>
 
             <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #ff6b6b, #ff8e53); color: white; margin-top: 10px;">
-                <i class="bi bi-check-circle-fill me-2"></i>Save Changes
+                <i class="me-2 bi bi-check-circle-fill"></i>Save Changes
             </button>
         </form>
 
-        <a href="manage-users.php" class="btn-back">
+        <a href="../manage-users.php" class="btn-back">
             <i class="bi bi-arrow-left"></i> Back to Users List
         </a>
     </div>
