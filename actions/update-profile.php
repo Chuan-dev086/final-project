@@ -1,5 +1,6 @@
 <?php
-require '../includes/header.php'; // 引入已有的 session_start() 和 $db 连接
+// DRY Principle
+require '../includes/header.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -14,10 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute([$username, $email, $user_id])) {
 
-            // 【核心修改】成功更新数据库后，同步更新 Session 里的用户名
+            // after renew the database ,renew the session username too
             $_SESSION['username'] = $username;
 
-            // 更新成功，直接跳转回仪表盘
+            // update sucessfully will redirect to dashboard.php
             header("Location:../dashboard.php");
             exit;
         } else {

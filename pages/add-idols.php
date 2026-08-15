@@ -23,7 +23,7 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $stage_name = trim($_POST['stage_name'] ?? '');
-    $group_id = $_POST['group_id'] ?? ''; // 接收选中的组合 ID
+    $group_id = $_POST['group_id'] ?? ''; // get the group ID selected 
 
     // data of 3 data input 
     $year = trim($_POST['dob_year'] ?? '');

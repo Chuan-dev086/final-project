@@ -121,15 +121,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- date (internal function of PHP ) will get the current year of server 
                          prevent user type year not exist  -->
                         <input type="number" class="form-control" name="release_year"
-                            placeholder="Year (年)" min="1970" max="<?= date('Y') ?>" required>
+                            placeholder="Year " min="1970" max="<?= date('Y') ?>" required>
                     </div>
                     <div class="col-4">
                         <input type="number" class="form-control" name="release_month"
-                            placeholder="Month (月)" min="1" max="12" required>
+                            placeholder="Month " min="1" max="12" required>
                     </div>
                     <div class="col-4">
                         <input type="number" class="form-control" name="release_day"
-                            placeholder="Day (日)" min="1" max="31" required>
+                            placeholder="Day " min="1" max="31" required>
                     </div>
                 </div>
             </div>

@@ -1,10 +1,10 @@
 <?php
 require '../includes/header.php';
 
-// 1. 获取当前登录用户的 ID
+// check the login status 
 $user_id = $_SESSION['user_id'];
 
-// 2. 使用 PDO 语法从数据库查询当前用户数据（完美对接你的 $db）
+// get user data from database 
 $query = "SELECT username, email FROM users WHERE id = ?";
 $stmt = $db->prepare($query);
 $stmt->execute([$user_id]);

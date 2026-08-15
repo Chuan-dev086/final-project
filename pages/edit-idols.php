@@ -19,7 +19,7 @@ if (empty($id)) {
 
 $error = '';
 
-// 🌟 核心优化：使用 LEFT JOIN 一次性把爱豆数据和他在中间表里的 group_id 查出来！
+// use left join to get the idol data and group id 
 $query = 'SELECT i.*, ig.group_id 
           FROM idols i 
           LEFT JOIN idol_group ig ON i.id = ig.idol_id 
@@ -34,14 +34,14 @@ if (!$idol) {
     exit;
 }
 
-// 提取当前查出来的关系 ID
+// get the group id 
 $current_group_id = $idol['group_id'] ?? '';
 
-// 获取所有可选组合供下拉菜单渲染
+// get every group for dropdown in form 
 $groups_stmt = $db->query("SELECT id, group_name FROM groups ORDER BY group_name ASC");
 $groups = $groups_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 拆解生日
+// split the Date of birth 
 $current_year = substr($idol['dob'], 0, 4);
 $current_month = substr($idol['dob'], 5, 2);
 $current_day = substr($idol['dob'], 8, 2);
@@ -49,7 +49,7 @@ $current_day = substr($idol['dob'], 8, 2);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $stage_name = trim($_POST['stage_name'] ?? '');
-    $group_id = $_POST['group_id'] ?? ''; // 新选的选择框组合 ID
+    $group_id = $_POST['group_id'] ?? ''; // group id selected 
 
     $year = trim($_POST['dob_year'] ?? '');
     $month = trim($_POST['dob_month'] ?? '');
@@ -58,12 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($name) || empty($stage_name) || empty($year) || empty($month) || empty($day)) {
         $error = 'All fields are required!';
     } else {
-        // 纯三元补零
+        // add the '0' for single digit 
         $month = (int)$month < 10 ? '0' . (int)$month : $month;
         $day   = (int)$day   < 10 ? '0' . (int)$day   : $day;
         $dob = "$year-$month-$day";
 
-        // 1. 更新主表基本信息
+        // update the data to database 
         $update_query = 'UPDATE idols SET name = :name, stage_name = :stage_name, dob = :dob WHERE id = :id';
         $update_stmt = $db->prepare($update_query);
         $update_stmt->execute([
@@ -73,11 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':id' => $id
         ]);
 
-        // 2. 清除该爱豆在中间表里的所有旧关联记录
+        // delete the relation between idol and group 
         $delete_rel = $db->prepare("DELETE FROM idol_group WHERE idol_id = :idol_id");
         $delete_rel->execute([':idol_id' => $id]);
 
-        // 3. 如果重新选了组合，再向关系表中加一条干净的新纪录
+        // if repick the group add a new record to the table
         if (!empty($group_id)) {
             $insert_rel = $db->prepare("INSERT INTO idol_group (group_id, idol_id) VALUES (:group_id, :idol_id)");
             $insert_rel->execute([
@@ -168,10 +168,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 <script>
-    // 标记页面是否有未保存的更改
+    // check the pages changes 
     let isDirty = false;
 
-    // 监听页面内所有输入框和下拉菜单的变化
+    // chaeck every input and select in the form 
     const formFields = document.querySelectorAll('input, select');
     formFields.forEach(field => {
         field.addEventListener('input', () => {
@@ -179,17 +179,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     });
 
-    // 当用户尝试关闭页面、刷新页面或点击跳转链接时触发
+    // when user try to close the form or refresh this function will triggeer 
     window.addEventListener('beforeunload', (event) => {
         if (isDirty) {
-            // 浏览器会拦截并显示自带的确认框
+            // browser will stop and prevent refresh 
             event.preventDefault();
-            event.returnValue = ''; // 某些浏览器需要此设置
+            event.returnValue = ''; 
         }
     });
 
-    // 关键：在表单提交时，将标记设为 false
-    // 否则点击“保存”按钮正常提交时，也会被拦截
+    // when the form submmit put isDirty become false or not the submition will be stop by browser 
     document.querySelector('form').addEventListener('submit', () => {
         isDirty = false;
     });

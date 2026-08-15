@@ -1,7 +1,7 @@
 <?php
 require '../includes/header.php';
 
-// 1. 检查用户是否登录
+// check user status (login or not )
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -13,7 +13,7 @@ if (!$id) {
     exit;
 }
 
-// 2. 获取当前专辑完整信息
+// get the full album data 
 $stmt = $db->prepare("SELECT * FROM albums WHERE id = :id");
 $stmt->execute([':id' => $id]);
 $album = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,23 +23,23 @@ if (!$album) {
     exit;
 }
 
-// 3. 读取所有组合，供下拉菜单渲染
+// fetch all group name for dropdown to select 
 $groups_stmt = $db->query("SELECT id, group_name FROM `groups` ORDER BY group_name ASC");
 $groups = $groups_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $error = '';
 
-// 🌟 核心处理：智能解析数据库里的歌曲数据
-// 无论以前是用逗号隔开的，还是换行隔开的，统一解析成干净的数组
+// format the song data in database 
+// format and cleaning the song data 
 $raw_songs = !empty($album['songs']) ? preg_split('/[\r\n,]+/', $album['songs']) : [];
-// 去除每一首歌前后的空格，并过滤掉空行
+// cut the spacing and filter the empty line for sogns
 $tracklist = array_filter(array_map('trim', $raw_songs));
 
-// 转换成供后台 Textarea 显示的一行一首的文本格式
+// convert to textarea and let one songs one line 
 $songs_for_textarea = implode("\n", $tracklist);
 
 
-// 4. 处理表单保存逻辑（Admin 和 Manager）
+// only admin and manager can edit album 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') {
         echo "<script>alert('Unauthorized action!'); window.location.href='../manage-albums.php';</script>";
@@ -50,13 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $group_id = $_POST['group_id'] ?? null;
     $release_date = trim($_POST['release_date'] ?? '');
     
-    // 🌟 接收前端文本框传过来的一行行的歌曲
+    // get the songs data 
     $songs_input = $_POST['songs'] ?? '';
-    // 按换行符切开
+    // split the song input by preg_split
     $submitted_songs = preg_split('/[\r\n]+/', $songs_input);
-    // 清理空格和空行
+    // clear the spacing 
     $cleaned_songs = array_filter(array_map('trim', $submitted_songs));
-    // 统一用“逗号+空格”拼装存入数据库，保证你原有的数据库结构不被破坏
+    // use comma to save the songs to prevent the damage of database structure 
     $songs_to_save = implode(', ', $cleaned_songs);
 
     if (empty($name) || empty($release_date)) {
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':name' => $name,
             ':group_id' => !empty($group_id) ? $group_id : null,
             ':release_date' => $release_date,
-            ':songs' => $songs_to_save, // 写入清洗后的数据
+            ':songs' => $songs_to_save, // write in the data after formatted 
             ':id' => $id
         ]);
         header('Location: manage-albums.php');
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form action="edit-album.php?id=<?= $id ?>" method="POST">
             
-            <!-- 专辑名称 -->
+            <!-- album name  -->
             <div class="mb-4">
                 <label for="name" class="form-label">Album Name</label>
                 <input type="text" class="form-control" id="name" name="name" 
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        <?= ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') ? 'readonly' : '' ?> required>
             </div>
 
-            <!-- 所属组合 -->
+            <!-- group  -->
             <div class="mb-4">
                 <label for="group_id" class="form-label">Group</label>
                 <select class="form-control form-select" id="group_id" name="group_id" 
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
 
-            <!-- 发行日期 -->
+            <!-- release date -->
             <div class="mb-4">
                 <label for="release_date" class="form-label">Release Date</label>
                 <input type="date" class="form-control" id="release_date" name="release_date" 
@@ -137,12 +137,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        <?= ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Manager') ? 'readonly' : '' ?> required>
             </div>
 
-            <!-- 🌟 歌曲输入/展现区（已全面升级为一行一首） -->
+            <!-- songs input  -->
             <div class="mb-4">
                 <label for="songs" class="form-label"><i class="me-1 text-info bi bi-music-note-list"></i> Songs / Tracklist</label>
                 
                 <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
-                    <!-- 情况 A：Admin/Manager 看到的是大文本域，可以回车换行编辑 -->
+                    <!-- for admin see is textarea which can edit the songs  -->
                     <textarea class="form-control" id="songs" name="songs" rows="6" 
                               placeholder="Type one song per line...&#10;Example:&#10;Song A&#10;Song B&#10;Song C" 
                               style="line-height: 1.6; resize: vertical; min-height: 120px;"><?= $songs_for_textarea ?></textarea>
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <i class="me-1 bi bi-info-circle"></i>Press <b>Enter</b> to start a new song line.
                     </div>
                 <?php else: ?>
-                    <!-- 情况 B：普通 User 看到的是高颜值数字化动态音轨列表 -->
+                    <!-- for user is only can see the list of song which cannot edit -->
                     <div class="p-3" style="background: rgba(17, 24, 39, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;">
                         <?php if (empty($tracklist)): ?>
                             <div class="py-2 text-white-50 text-center small">No tracks in this album.</div>
@@ -176,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
             </div>
 
-            <!-- 只有 Admin 和 Manager 展现 Save 按钮 -->
+            <!-- only admin and manager have save button  -->
             <?php if ($_SESSION['role'] === 'Admin' || $_SESSION['role'] === 'Manager'): ?>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #725ac1, #a78bfa); color: white; margin-top: 10px;">
                     <i class="me-2 bi bi-save-fill"></i>Save Changes

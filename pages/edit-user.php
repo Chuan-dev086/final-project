@@ -1,7 +1,7 @@
 <?php
 require '../includes/header.php';
 
-// 1. 严格权限校验：只有 Admin 才能进这个页面
+// role checking (only admin can go in this pages )
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header('Location: dashboard.php');
     exit;
@@ -13,7 +13,7 @@ if (!$id) {
     exit;
 }
 
-// 2. 获取用户基础资料
+// get the user data 
 $stmt = $db->prepare("SELECT * FROM users WHERE id = :id");
 $stmt->execute([':id' => $id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,14 +23,14 @@ if (!$user) {
     exit;
 }
 
-// 判断当前查看的是不是 Admin 自己
+// check the id whether is admin itself  
 $is_me = ($id == $_SESSION['user_id']);
 
-// 3. 处理资料修改提交逻辑
+// the request method of form 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($is_me) {
-        // 情况 A：Admin 修改自己 -> 允许更新 username 和 email，不准动 role
+        // if admin edit itself only can edit username and email cannot edit role
         $username = trim($_POST['username']);
         $email = trim($_POST['email']);
         
@@ -44,18 +44,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             
             if ($result) {
-                $_SESSION['username'] = $username; // 同步更新当前 Session
-                header('Location: ../dashboard.php'); // 改自己就跳回仪表盘
+                $_SESSION['username'] = $username; // renew the current session
+                header('Location: ../dashboard.php'); // redirect to dashboard
                 exit;
             }
         }
     } else {
-        // 情况 B：Admin 修改别人 -> 只更新 role，不准动 username 和 email
+        // if admin edit other only can edit role cannot edit username and email 
         $role = $_POST['role'] ?? 'User';
         $updateQuery = "UPDATE users SET role = :role WHERE id = :id";
         $updateStmt = $db->prepare($updateQuery);
         if ($updateStmt->execute([':role' => $role, ':id' => $id])) {
-            header('Location: ../manage-users.php'); // 改别人就跳回用户管理列表
+            header('Location: ../manage-users.php'); // edit other then redirect to manage-user.php
             exit;
         }
     }

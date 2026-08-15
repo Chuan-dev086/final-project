@@ -1,10 +1,10 @@
 <?php
 // header.php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // 自动在所有页面开启 Session
+    session_start(); // start the session in all pages 
 }
 
-// 你的 PDO 连接（不用 try-catch）
+// connect to database with PDO connection 
 $db = new PDO("mysql:host=localhost;dbname=kpop_management", "root", "");
 ?>
 <!DOCTYPE html>

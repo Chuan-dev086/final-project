@@ -1,7 +1,7 @@
 <?php
 require '../includes/header.php';
 
-// 1. 登录校验
+// user login status 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -13,7 +13,7 @@ if (!$id) {
     exit;
 }
 
-// 2. 查询当前选中的组合名字
+// get the group name from database 
 $stmt = $db->prepare("SELECT * FROM `groups` WHERE id = :id");
 $stmt->execute([':id' => $id]);
 $group = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,7 +24,7 @@ if (!$group) {
 }
 
 
-// 🌟 3. 核心：点进来后，才从数据库里把这个 group 的所有组员艺名查出来
+// after click then get the idol stage name from database 
 $members_stmt = $db->prepare("
     SELECT i.stage_name 
     FROM idols i 
@@ -33,11 +33,11 @@ $members_stmt = $db->prepare("
     ORDER BY i.stage_name ASC
 ");
 $members_stmt->execute([':group_id' => $id]);
-$members = $members_stmt->fetchAll(PDO::FETCH_COLUMN); // 拿到纯名字数组
+$members = $members_stmt->fetchAll(PDO::FETCH_COLUMN); // get the pure name array 
 
 $error = '';
 
-// 4. 处理表单修改逻辑（只有 Admin 有权修改提交）
+// only admin can edit the group 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_SESSION['role'] !== 'Admin') {
         echo "<script>alert('Only Admin can edit!'); window.location.href='../manage-groups.php';</script>";
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
 
-            <!-- 只有管理员显示 Save 按钮 -->
+            <!-- only admin have save button  -->
             <?php if ($_SESSION['role'] === 'Admin'): ?>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #725ac1, #a78bfa); color: white;">
                     <i class="me-2 bi bi-save-fill"></i>Save Changes

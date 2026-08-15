@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 // role verify 
 if ($_SESSION['role'] !== 'Admin') {
 
-    echo "<script>alert('你没有权限进行此操作！'); window.location.href='../manage-groups.php';</script>";
+    echo "<script>alert('You don't have role to perform this action!!'); window.location.href='../manage-groups.php';</script>";
     exit;
 }
 
