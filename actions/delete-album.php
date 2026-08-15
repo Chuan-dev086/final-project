@@ -1,6 +1,6 @@
 <?php
 // 1. 引入初始化文件（获取 $db 和 session）
-require 'header.php';
+require '../includes/header.php';
 
 // 2. 检查用户是否登录
 if (!isset($_SESSION['user_id'])) {
